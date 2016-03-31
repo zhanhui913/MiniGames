@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class Timer : MonoBehaviour {
 
@@ -7,12 +8,7 @@ public class Timer : MonoBehaviour {
 	private float second2 = 0; //Second Second count
 	private float minute1 = 0;  //First Minute count
 	private float minute2 = 0;  //Second Minute count
-	private UILabel timerText; 
-	
-	// Use this for initialization
-	void Start () {
-		timerText = GetComponent<UILabel> ();
-	}
+	public Text timerText; 
 	
 	// Update is called once per frame
 	void Update () {

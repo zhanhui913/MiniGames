@@ -22,8 +22,8 @@ public class AvatarSelection : MonoBehaviour {
 		GameManager.setStartGame (true);
 
 		//Let movement script know it can fetch the avatar information now
-		leftPanel.GetComponent<Movement> ().setAvatarMovement ();
-		rightPanel.GetComponent<Movement> ().setAvatarMovement ();
+//		leftPanel.GetComponent<Movement> ().setAvatarMovement ();
+		//rightPanel.GetComponent<Movement> ().setAvatarMovement ();
 
 	}
 }

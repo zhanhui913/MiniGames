@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class Movement : MonoBehaviour {
 	public string indi;
@@ -38,15 +39,28 @@ public class Movement : MonoBehaviour {
 	}
 
 	//Might not need this and set avatar variable in update or start instead
-	public void setAvatarMovement(){
+	public void setAvatarMovement(GameObject avatar){
 		//Get the prefab that was selected by the player
-		string avatar = GameManager.avatar;
-		player = GameObject.Find (avatar);
+		//string avatar = GameManager.avatar;
+		//player = GameObject.Find (avatar);
+		player = avatar;
 		scaleX = player.transform.localScale.x; 
 		
 		//Get Animation component
 		CraneAnimator = player.GetComponent<Animator>();
 	}
+	/*
+	pub/lic void OnPointerUp(PointerEventData eventData){
+		if (GameManager.startGame) {
+			CustomMouseUp();
+		}
+	}
+
+	public void OnPointerDown(PointerEventData eventData){
+		if (GameManager.startGame) {
+			CustomMouseDown ();
+		}
+	}*/
 
 
 	public void CustomMouseDown(){
@@ -107,9 +121,15 @@ public class Movement : MonoBehaviour {
 
 			GameManager.setChevronActive(indi); //Set which direction the chevron is being used.
 		}
+
+		Debug.LogWarning ("bow down direction : "+dir);
 	}
 
 	public void BowUp(){
+
+		Debug.LogWarning ("movement bow up - "+GameManager.getChevronActive());
+
+
 		if(GameManager.getChevronActive() == "false"){
 			//Set animator parameter for avatar "bowDown" to false
 			CraneAnimator.SetBool ("BowDown",false);
@@ -117,7 +137,10 @@ public class Movement : MonoBehaviour {
 			//Adding elements into easterEgg array
 			//GameManager.addKeyToEasterEgg("Down");
 			//Debug.Log ("2) adding key to easter egg down");
+
+
 		}
+
 	}
 
 	//Increment n towards target by speed

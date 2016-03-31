@@ -1,7 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
-public class LeftRightPanel : MonoBehaviour {
+public class LeftRightPanel : MonoBehaviour, IPointerDownHandler, IPointerUpHandler {
 
 	public GameObject panel;
 
@@ -26,7 +28,7 @@ public class LeftRightPanel : MonoBehaviour {
 	}
 
 	//NGUI uses OnPress, not OnMouseDown
-	void OnPress(bool pressed){
+	/*void OnPress(bool pressed){
 		if(GameManager.startGame){
 			if(pressed){
 				onPressed = true;
@@ -34,7 +36,17 @@ public class LeftRightPanel : MonoBehaviour {
 				onPressed = false;
 			}
 		}
+	}*/
+
+	public void OnPointerUp(PointerEventData eventData){
+		if (GameManager.startGame) {
+			onPressed = false;
+		}
 	}
 
-
+	public void OnPointerDown(PointerEventData eventData){
+		if (GameManager.startGame) {
+			onPressed = true;
+		}
+	}
 }

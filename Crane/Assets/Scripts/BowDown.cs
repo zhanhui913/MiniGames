@@ -1,7 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
-public class BowDown : MonoBehaviour {
+public class BowDown : MonoBehaviour , IPointerDownHandler, IPointerUpHandler{
 
 	public GameObject panel;
 	public int direction; // direction = -1 (left), direction = 1 (right)
@@ -20,10 +22,16 @@ public class BowDown : MonoBehaviour {
 		if(GameManager.startGame){
 			//Check for touch input NGUI
 			if (onPressed) {
+
+				Debug.LogWarning ("bow down");
+
 				m.BowDown(direction);
 				once = true;
 			}else{
 				if(once){
+
+					Debug.LogWarning ("bow up");
+
 					m.BowUp();
 					once = false;
 				}
@@ -32,7 +40,7 @@ public class BowDown : MonoBehaviour {
 	}
 	
 	//NGUI uses OnPress, not OnMouseDown
-	void OnPress(bool pressed){
+	/*void OnPress(bool pressed){
 		if(GameManager.startGame){
 			if(pressed){
 				onPressed = true;
@@ -40,5 +48,20 @@ public class BowDown : MonoBehaviour {
 				onPressed = false;
 			}
 		}
+	}*/
+
+	public void OnPointerUp(PointerEventData eventData){
+		if (GameManager.startGame) {
+			onPressed = false;
+			Debug.LogWarning ("OnPointerUp");
+		}
 	}
+
+	public void OnPointerDown(PointerEventData eventData){
+		if (GameManager.startGame) {
+			onPressed = true;
+			Debug.LogWarning ("OnPointerDown");
+		}
+	}
+
 }

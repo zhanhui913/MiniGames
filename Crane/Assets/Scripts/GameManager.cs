@@ -61,7 +61,7 @@ public class GameManager : MonoBehaviour {
 	void Start () {
 		avatarPopup = GameObject.Find ("AvatarSelectionPopup");
 		gameOverPopup = GameObject.Find ("GameOverPopup");
-		fader = GameObject.Find ("BackgroundFader");
+		//fader = GameObject.Find ("BackgroundFader");
 
 		gameOverPopup.SetActive (false);//Must set it active when launching, otherwise we cannot get instance to it.
 
@@ -290,7 +290,7 @@ public class GameManager : MonoBehaviour {
 	//Set the avatar so that other scripts can access what avatar the user selected
 	public static void setAvatar(string avatarSelected){
 		avatar = avatarSelected;
-
+		Debug.LogWarning ("selected avatar : "+avatarSelected);
 		switch(avatar){
 			case "Crane":
 				//If the user selects Crane, disable Flamingo object
@@ -319,13 +319,13 @@ public class GameManager : MonoBehaviour {
 	//Disable/Enable the Fader popup (along with the fader)
 	public static void PopupShow(bool show){
 		avatarPopup.SetActive (show);
-		fader.SetActive (show);
+		//fader.SetActive (show);
 	}
 
 	//Disable/Enable the GameOver popup (along with the fader)
 	public static void GameOver(bool show){
 		gameOverPopup.SetActive (show);
-		fader.SetActive (show);
+		//fader.SetActive (show);
 	}
 
 	//Setter for chevronActive variable
