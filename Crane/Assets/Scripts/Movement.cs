@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
-using UnityEngine.EventSystems;
 
 public class Movement : MonoBehaviour {
 	public string indi;
@@ -49,19 +48,6 @@ public class Movement : MonoBehaviour {
 		//Get Animation component
 		CraneAnimator = player.GetComponent<Animator>();
 	}
-	/*
-	pub/lic void OnPointerUp(PointerEventData eventData){
-		if (GameManager.startGame) {
-			CustomMouseUp();
-		}
-	}
-
-	public void OnPointerDown(PointerEventData eventData){
-		if (GameManager.startGame) {
-			CustomMouseDown ();
-		}
-	}*/
-
 
 	public void CustomMouseDown(){
 		//Used to ensure only 1 chevron can be clicked at a time 

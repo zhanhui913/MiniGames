@@ -38,17 +38,6 @@ public class BowDown : MonoBehaviour , IPointerDownHandler, IPointerUpHandler{
 			}
 		}
 	}
-	
-	//NGUI uses OnPress, not OnMouseDown
-	/*void OnPress(bool pressed){
-		if(GameManager.startGame){
-			if(pressed){
-				onPressed = true;
-			}else{
-				onPressed = false;
-			}
-		}
-	}*/
 
 	public void OnPointerUp(PointerEventData eventData){
 		if (GameManager.startGame) {
