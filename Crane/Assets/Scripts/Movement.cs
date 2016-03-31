@@ -107,15 +107,9 @@ public class Movement : MonoBehaviour {
 
 			GameManager.setChevronActive(indi); //Set which direction the chevron is being used.
 		}
-
-		Debug.LogWarning ("bow down direction : "+dir);
 	}
 
 	public void BowUp(){
-
-		Debug.LogWarning ("movement bow up - "+GameManager.getChevronActive());
-
-
 		if(GameManager.getChevronActive() == "false"){
 			//Set animator parameter for avatar "bowDown" to false
 			CraneAnimator.SetBool ("BowDown",false);
@@ -123,10 +117,7 @@ public class Movement : MonoBehaviour {
 			//Adding elements into easterEgg array
 			//GameManager.addKeyToEasterEgg("Down");
 			//Debug.Log ("2) adding key to easter egg down");
-
-
 		}
-
 	}
 
 	//Increment n towards target by speed

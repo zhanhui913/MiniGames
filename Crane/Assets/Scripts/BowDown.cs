@@ -22,16 +22,10 @@ public class BowDown : MonoBehaviour , IPointerDownHandler, IPointerUpHandler{
 		if(GameManager.startGame){
 			//Check for touch input NGUI
 			if (onPressed) {
-
-				Debug.LogWarning ("bow down");
-
 				m.BowDown(direction);
 				once = true;
 			}else{
 				if(once){
-
-					Debug.LogWarning ("bow up");
-
 					m.BowUp();
 					once = false;
 				}
@@ -42,14 +36,12 @@ public class BowDown : MonoBehaviour , IPointerDownHandler, IPointerUpHandler{
 	public void OnPointerUp(PointerEventData eventData){
 		if (GameManager.startGame) {
 			onPressed = false;
-			Debug.LogWarning ("OnPointerUp");
 		}
 	}
 
 	public void OnPointerDown(PointerEventData eventData){
 		if (GameManager.startGame) {
 			onPressed = true;
-			Debug.LogWarning ("OnPointerDown");
 		}
 	}
 

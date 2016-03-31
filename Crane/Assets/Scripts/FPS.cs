@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 // Attach this to a GUIText to make a frames/second indicator.
 //
@@ -19,7 +20,7 @@ public class FPS : MonoBehaviour {
 	private int   frames  = 0; // Frames drawn over the interval
 	private float timeleft; // Left time for current interval
 
-	private UILabel fpsText;
+	private Text fpsText;
 
 	// Use this for initialization
 	void Start () {
@@ -29,7 +30,7 @@ public class FPS : MonoBehaviour {
 			return;
 		}*/
 
-		fpsText = GetComponent<UILabel> ();
+		fpsText = GetComponent<Text> ();
 
 		timeleft = updateInterval; 
 	}
