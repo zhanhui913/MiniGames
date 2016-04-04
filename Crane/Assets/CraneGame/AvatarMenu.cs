@@ -1,31 +1,43 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine.UI;
+using System;
+
+[Serializable]
+public class Character{
+	public Button characterButton;
+	public GameObject characterObject;
+}
 
 public class AvatarMenu : MonoBehaviour {
 
-	public Button craneBtn, flamingoBtn;
-	public GameObject craneAvatar, flamingoAvatar;
+
+	public Character craneCharacter;
+	public Character flamingoCharacter;
+
+
 	public GameObject leftPanel, rightPanel;
 
 	// Use this for initialization
 	void Start () {
-		craneBtn.onClick.AddListener (() => {
-			characterSelect("Crane",craneAvatar);
-		});
 
-		flamingoBtn.onClick.AddListener (() => {
-			characterSelect("Flamingo",flamingoAvatar);
-		});
+		craneCharacter.characterObject.gameObject.SetActive (false);
+		flamingoCharacter.characterObject.gameObject.SetActive (false);
+
+		craneCharacter.characterButton.onClick.AddListener (() => characterSelect(craneCharacter.characterObject));
+		flamingoCharacter.characterButton.onClick.AddListener (() => characterSelect(flamingoCharacter.characterObject));
 	}
 	
-	private void characterSelect(string avatar, GameObject avatarGO){
+	private void characterSelect(GameObject avatarObject){
+		avatarObject.gameObject.SetActive (true);
+
 		GameManager.PopupShow(false);
-		GameManager.setAvatar(avatar);
 		GameManager.setStartGame (true);
+		GameManager.setAvatar (avatarObject);
 
 		//Let movement script know it can fetch the avatar information now
-		leftPanel.GetComponent<Movement> ().setAvatarMovement (avatarGO);
-		rightPanel.GetComponent<Movement> ().setAvatarMovement (avatarGO);
+		leftPanel.GetComponent<Movement> ().setAvatarMovement (avatarObject);
+		rightPanel.GetComponent<Movement> ().setAvatarMovement (avatarObject);
 	}
 }

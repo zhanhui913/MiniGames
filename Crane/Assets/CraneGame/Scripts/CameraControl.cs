@@ -3,9 +3,6 @@ using System.Collections;
 
 public class CameraControl : MonoBehaviour {
 
-	//Reference to the player's avatar's transform
-	private GameObject avatarObject;
-
 	//Counter to only process once
 	private int counter = 0;
 
@@ -35,7 +32,6 @@ public class CameraControl : MonoBehaviour {
 			if(GameManager.avatar != null){
 				//Only enter once as GameObject.Find is an expensive operation
 				if(counter == 0){
-					avatarObject = GameObject.Find (GameManager.avatar);
 					counter++;
 				}else{
 					TrackPlayer ();		
@@ -50,7 +46,7 @@ public class CameraControl : MonoBehaviour {
 	 */ 
 	void TrackPlayer(){
 		// By default the target x and y coordinates of the camera are it's current x and y coordinates.
-		float targetX = avatarObject.transform.position.x;
+		float targetX = GameManager.avatar.transform.position.x;
 		
 		// Set the camera's position to the target position with the same z component.
 		this.transform.position = new Vector3(targetX, transform.position.y, transform.position.z);

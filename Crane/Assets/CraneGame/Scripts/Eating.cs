@@ -7,6 +7,9 @@ public class Eating : MonoBehaviour {
 	public Text foodCountText;
 
 	private int foodCount = 0;
+	private const string BIG_FISH = "BigFish";
+	private const string SMALL_FISH = "SmallFish";
+	private const string FEDORA = "Fedora";
 
 	void Start(){
 		foodCountText.text = "Food Eaten : 0";
@@ -14,23 +17,19 @@ public class Eating : MonoBehaviour {
 
 	void OnTriggerEnter2D(Collider2D other){
 		//Increase energy
-		if(other.gameObject.name == "BigFish(Clone)"){
-			EnergyBar.addFoodTime (1f);     Debug.Log ("bigfish eaten");
+		if(other.tag == BIG_FISH || other.tag == SMALL_FISH){
+			if (other.tag == BIG_FISH) {
+				EnergyBar.addFoodTime (1f);	
+			} else {
+				EnergyBar.addFoodTime (0.5f);	
+			}
+
 			Destroy(other.gameObject);
 			foodCount++;
 			foodCountText.text = "Food Eaten : "+foodCount;
-		}else if(other.gameObject.name == "SmallFish(Clone)"){
-			EnergyBar.addFoodTime (0.5f);    Debug.Log ("smallfish eaten");
+		}else if(other.tag == FEDORA){
 			Destroy(other.gameObject);
-			foodCount++;
-			foodCountText.text = "Food Eaten : "+foodCount;
-		}else if(other.gameObject.name == "Fedora(Clone)"){
-			Debug.Log ("eaten fedora");
-			Destroy(other.gameObject);
-			GameObject f = GameObject.Find (GameManager.getAvatar());
-			GameObject c = f.transform.Find (GameManager.getAvatar()+"Head").gameObject;
-			GameObject fe = c.transform.Find ("Fedora").gameObject;
-			fe.SetActive(true);
+			transform.FindChild ("Fedora").gameObject.SetActive (true);
 		}
 			
 		Debug.Log ("need fish to win : "+GameManager.getNumFoodToWin ());

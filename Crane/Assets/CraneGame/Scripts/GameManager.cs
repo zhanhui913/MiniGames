@@ -5,7 +5,7 @@ public class GameManager : MonoBehaviour {
 
 	[HideInInspector]
 	public static bool startGame = false; //The game has not started yet
-	public static string avatar = null;   //What avatar the user selected
+	public static GameObject avatar = null;   //What avatar the user selected
 	
 	public static GameManager self;
 
@@ -13,8 +13,6 @@ public class GameManager : MonoBehaviour {
 	public GameObject targetFishSpawnContainer; //The parent container where the fish objects should be spawn under
 	public float numFish;       //Number of fishes around each spawn point.
 	public float fishSpawnRadius = 10; //The radius to which the fishes will spawn within.
-
-
 
 	public GameObject fishSpawnPrefab;  //The fishSpawnPoint prefab
 	public GameObject[] fishSpawnPointsPrefabList; //The lists of spawn points prefabs of the fishes.
@@ -35,19 +33,15 @@ public class GameManager : MonoBehaviour {
 	public float AlgaesYMinPos = -0.04f;
 	public float AlgaesYMaxPos = 1.1f;
 
-	public static int numberOfFoodRequired = 10;//The number of food required to win the game
+	public const int NUM_FISH = 10;//The number of food required to win the game
 
 	private static GameObject avatarPopup;  //Avatar selection popup.
 	private static GameObject gameOverPopup; //Game over popup.
 	private static GameObject fader;
 	private static string chevronActive = "false"; //Will be used to ensure that left/right chevron cannot be clicked simultaneously (left = left chevron is being used, right = right chevron is being used, false = unused)
 
-	//Easter Egg (The correct combination is Down, Down, Left, Right, Left, Right)
-	private static string[] easterEgg = new string[6];
-	private static int easterIndex = 0; //Used to keep track of current index in array
 	private static bool once = false; //Only used to check once
 	public GameObject fedora;
-
 
 	void Awake(){
 		self = this;
@@ -76,31 +70,6 @@ public class GameManager : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		/*if (!once && easterIndex == 6) {
-			Debug.Log ("checking easter combination");
-			Debug.Log ("combination is (" + easterEgg [0] + "," + easterEgg [1] + "," + easterEgg [2] + "," + easterEgg [3] + "," + easterEgg [4] + "," + easterEgg [5] + ")");
-			once = true;
-			clearEasterEgg();
-
-			//When easterEgg is activated, drop fedora
-			if(easterEgg[0]== "Down" &&
-			   easterEgg[1]== "Down" &&
-			   easterEgg[2]== "Left" &&
-			   easterEgg[3]== "Right" &&
-			   easterEgg[3]== "Left" &&
-			   easterEgg[4]== "Right"){
-				fedora = (GameObject)Instantiate(GameObject.Find ("Fedora"));
-				fedora.SetActive(true);
-
-				//Find a random x position in between the current screen
-				//float x = ;
-
-				Debug.Log ("correct easter egg combination");
-				//fedora.transform.localPosition = new Vector2(x,y);
-			}
-		}
-	*/
-
 		//After 2 seconds
 		if(!once && (Time.deltaTime* 1000 >2)){
 			GameObject fedora1 = (GameObject)Instantiate(fedora);
@@ -109,7 +78,6 @@ public class GameManager : MonoBehaviour {
 			//Find a random x position in between the current screen
 			//float x = ;
 			
-			Debug.Log ("spawn easter egg combination");
 
 			//put easterEgg under parent WaterContainer
 			fedora1.transform.parent = targetFishSpawnContainer.transform;
@@ -117,9 +85,7 @@ public class GameManager : MonoBehaviour {
 			once = true;
 		}
 	}
-
-
-
+		
 	/**
 	 * This function selects "num" fish spawn points that is equally distanced from each other.
 	 */ 
@@ -201,8 +167,7 @@ public class GameManager : MonoBehaviour {
 			spawnSnail(xMin, xMax, SnailYMinPos, SnailYMaxPos);
 		}
 	}
-
-
+		
 	/**
 	 * Spawns 1 of 2 different algaes depending on index at random x and y position (within the constraints provided in parameter)
 	 */ 
@@ -258,7 +223,6 @@ public class GameManager : MonoBehaviour {
 		}
 	}
 
-
 	/**
 	 * Get waterContainer's width 
 	 */ 
@@ -288,23 +252,12 @@ public class GameManager : MonoBehaviour {
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	//Set the avatar so that other scripts can access what avatar the user selected
-	public static void setAvatar(string avatarSelected){
-		avatar = avatarSelected;
-		Debug.LogWarning ("selected avatar : "+avatarSelected);
-		switch(avatar){
-			case "Crane":
-				//If the user selects Crane, disable Flamingo object
-				GameObject.Find ("Flamingo").SetActive(false);
-				break;
-			case "Flamingo":
-				//If the user selects Flamingo, disable Crane object
-				GameObject.Find ("Crane").SetActive(false);
-				break;
-		}
+	public static void setAvatar(GameObject avatarObject){
+		avatar = avatarObject;
 	}
 
 	//Getter foro the avatar variable
-	public static string getAvatar(){
+	public static GameObject getAvatar(){
 		return avatar;
 	}
 
@@ -339,48 +292,8 @@ public class GameManager : MonoBehaviour {
 	}
 
 	public static int getNumFoodToWin(){
-		return numberOfFoodRequired;
+		return NUM_FISH;
 	}
-
-	////////////////////////////////////////////////////////////////////////////////////////////////////
-	/// 
-	/// Easter Egg static functions
-	/// 
-	////////////////////////////////////////////////////////////////////////////////////////////////////
-
-	/// <summary>
-	/// Add an element to the next available index of easterEgg array.
-	/// </summary>
-	/// <param name="key">The name to add into the array</param>
-	public static void addKeyToEasterEgg(string key){
-			easterEgg [easterIndex] = key;				
-			easterIndex++;
-	}
-	
-	/// <summary>
-	/// Clears the easterEgg array, get rid of all elements.
-	/// </summary>
-	public static void clearEasterEgg(){
-		System.Array.Clear(easterEgg, 0, easterEgg.Length);
-		easterIndex = 0;
-		once = false;
-	}
-	
-	/// <summary>
-	/// Getter for the easterEgg array.
-	/// </summary>
-	/// <returns>The easterEgg array.</returns>
-	/*public static string[] getEasterArray(){
-		return easterEgg;
-	}*/
-
-	/// <summary>
-	/// Resets the index of the easterEgg array.
-	/// </summary>
-	public static void resetEasterIndex(){
-		easterIndex = 0;
-	}
-
 
 	//Remove when done testing (done include in production)
 	public void restartLevel(){
