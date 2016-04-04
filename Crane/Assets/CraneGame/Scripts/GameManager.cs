@@ -71,7 +71,7 @@ public class GameManager : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		//After 2 seconds
-		if(!once && (Time.deltaTime* 1000 >2)){
+		if(!once && (Time.deltaTime* 1000 > 2)){
 			GameObject fedora1 = (GameObject)Instantiate(fedora);
 			//fedora1.SetActive(true);
 			
@@ -295,7 +295,7 @@ public class GameManager : MonoBehaviour {
 		return NUM_FISH;
 	}
 
-	//Remove when done testing (done include in production)
+	//Remove when done testing (dont include in production)
 	public void restartLevel(){
 		Application.LoadLevel(0);
 	}

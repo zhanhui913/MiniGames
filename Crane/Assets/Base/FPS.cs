@@ -24,14 +24,7 @@ public class FPS : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		/*if( !NGUIText ){
-			Debug.Log("UtilityFramesPerSecond needs a NGUIText component!");
-			enabled = false;
-			return;
-		}*/
-
 		fpsText = GetComponent<Text> ();
-
 		timeleft = updateInterval; 
 	}
 	

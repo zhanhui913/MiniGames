@@ -77,7 +77,6 @@ public class CameraControl : MonoBehaviour {
 				leftPanel.SetActive(true);
 				c = 0;
 			}
-
 		}
 	}
 

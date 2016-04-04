@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-
+//Doesnt seems to be used
 public class Container : MonoBehaviour {
 
 	private float childWidth = 0;     //The width of the child's spriteRenderer's width
@@ -25,6 +25,7 @@ public class Container : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		Debug.LogWarning ("fds");
 		//Update the width of the container as child's count increases.
 		//Multiply it by 100 since it returns in units per 100 pixels. (might not be true)
 		containerWidth = childWidth * gameObject.transform.childCount;

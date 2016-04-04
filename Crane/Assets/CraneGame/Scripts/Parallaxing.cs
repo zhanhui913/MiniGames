@@ -31,7 +31,7 @@ public class Parallaxing : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void Update () { Debug.LogWarning("parallaxing");
 		//For each background
 		for(int i = 0 ;i < backgrounds.Length; i++){
 			//The parallax is the opposite from the camera's movement because the previous frame was multiplied by the scale
