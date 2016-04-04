@@ -1,47 +1,54 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
-public class Movement : MonoBehaviour {
+public class Movement : MonoBehaviour, IPointerDownHandler, IPointerUpHandler {
 	public string indi;
-	public GameObject player;
-	
+
+	private GameObject player;
 	private int direction = 0;
 	private float scaleX;
 
 	//Player Handling
-	public float speed = 4;
-	public float acceleration = 30;
+	private const float SPEED = 4;
+	private const float ACCELERATION = 30;
 
 	//Player Movement
 	private float currentSpeed;
 	private float targetSpeed;
 	private Vector2 amountToMove;
+	private bool onPressed = false;
 
 	private Animator CraneAnimator;
 
 	// Use this for initialization
 	void Start () {
-		Debug.Log ("movement ftw");
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		if(GameManager.startGame){
-			targetSpeed = direction * speed;
-			currentSpeed = IncrementTowards (currentSpeed, targetSpeed, acceleration);
+			targetSpeed = direction * SPEED;
+			currentSpeed = IncrementTowards (currentSpeed, targetSpeed, ACCELERATION);
 			
 			amountToMove.x = currentSpeed;
 			amountToMove.y = 0;
 			Move (amountToMove * Time.deltaTime);
 		}
+
+		if(GameManager.startGame){
+			//Check for touch input NGUI
+			if (onPressed) {
+				CustomMouseDown ();
+			} else {
+				CustomMouseUp ();
+			}
+		}
 	}
 
 	//Might not need this and set avatar variable in update or start instead
 	public void setAvatarMovement(GameObject avatar){
-		//Get the prefab that was selected by the player
-		//string avatar = GameManager.avatar;
-		//player = GameObject.Find (avatar);
 		player = avatar;
 		scaleX = player.transform.localScale.x; 
 		
@@ -65,7 +72,6 @@ public class Movement : MonoBehaviour {
 				direction = 1;
 				player.transform.localScale = new Vector2(scaleX,player.transform.localScale.y);
 			}
-
 		}
 	}
 
@@ -76,10 +82,6 @@ public class Movement : MonoBehaviour {
 			CraneAnimator.SetBool ("Move",false);
 			direction = 0;
 			GameManager.setChevronActive ("false");
-
-			//Adding elements into easterEgg array
-			//GameManager.addKeyToEasterEgg(indi);
-			//Debug.Log ("1) adding key to easter egg "+indi);
 		}
 	}
 
@@ -113,10 +115,6 @@ public class Movement : MonoBehaviour {
 		if(GameManager.getChevronActive() == "false"){
 			//Set animator parameter for avatar "bowDown" to false
 			CraneAnimator.SetBool ("BowDown",false);
-			
-			//Adding elements into easterEgg array
-			//GameManager.addKeyToEasterEgg("Down");
-			//Debug.Log ("2) adding key to easter egg down");
 		}
 	}
 
@@ -139,5 +137,17 @@ public class Movement : MonoBehaviour {
 		Vector2 finalTransform = new Vector2(deltaX, deltaY);
 		
 		player.transform.Translate (finalTransform);
+	}
+
+	public void OnPointerUp(PointerEventData eventData){
+		if (GameManager.startGame) {
+			onPressed = false;
+		}
+	}
+
+	public void OnPointerDown(PointerEventData eventData){
+		if (GameManager.startGame) {
+			onPressed = true;
+		}
 	}
 }

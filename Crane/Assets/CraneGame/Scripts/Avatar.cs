@@ -5,8 +5,8 @@ using System;
 
 [Serializable]
 public enum AVATAR_DIRECTION{
-	LEFT,
-	RIGHT
+	LEFT = -1,
+	RIGHT = 1
 }
 	
 public class Avatar : MonoBehaviour {

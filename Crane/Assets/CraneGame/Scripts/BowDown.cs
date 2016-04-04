@@ -5,16 +5,14 @@ using UnityEngine.EventSystems;
 
 public class BowDown : MonoBehaviour , IPointerDownHandler, IPointerUpHandler{
 
-	public GameObject panel;
-	public int direction; // direction = -1 (left), direction = 1 (right)
+	public Movement movement;
+	public AVATAR_DIRECTION direction;
 
-	private Movement m;
 	private bool onPressed = false;
 	private bool once = false; //Only ensure bowUp happen once after bownDown in the update().
 	
 	// Use this for initialization
 	void Start () {
-		m = panel.GetComponent<Movement> ();
 	}
 	
 	// Update is called once per frame
@@ -22,11 +20,11 @@ public class BowDown : MonoBehaviour , IPointerDownHandler, IPointerUpHandler{
 		if(GameManager.startGame){
 			//Check for touch input NGUI
 			if (onPressed) {
-				m.BowDown(direction);
+				movement.BowDown((int)direction);
 				once = true;
 			}else{
 				if(once){
-					m.BowUp();
+					movement.BowUp();
 					once = false;
 				}
 			}

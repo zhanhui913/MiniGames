@@ -5,14 +5,12 @@ using UnityEngine.EventSystems;
 
 public class LeftRightPanel : MonoBehaviour, IPointerDownHandler, IPointerUpHandler {
 
-	public GameObject panel;
-
 	private Movement m;
 	private bool onPressed = false;
 
 	// Use this for initialization
 	void Start () {
-		m = panel.GetComponent<Movement> ();
+		m = GetComponent<Movement> ();
 	}
 	
 	// Update is called once per frame
