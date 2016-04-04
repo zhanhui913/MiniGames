@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour {
 
@@ -37,6 +38,8 @@ public class GameManager : MonoBehaviour {
 
 	private static GameObject avatarPopup;  //Avatar selection popup.
 	private static GameObject gameOverPopup; //Game over popup.
+	private static Text gameOverText;
+
 	private static GameObject fader;
 	private static string chevronActive = "false"; //Will be used to ensure that left/right chevron cannot be clicked simultaneously (left = left chevron is being used, right = right chevron is being used, false = unused)
 
@@ -45,17 +48,13 @@ public class GameManager : MonoBehaviour {
 
 	void Awake(){
 		self = this;
-
-		//This code should be in the game
-		//gameOverPopup = GameObject.Find ("GameOverPopup"); 
-		//gameOverPopup.SetActive (false); //Set it to false immediately after getting instance of this object since cannot get instance to this object if it is originally disabled.
 	}
 
 	// Use this for initialization
 	void Start () {
 		avatarPopup = GameObject.Find ("AvatarSelectionPopup");
 		gameOverPopup = GameObject.Find ("GameOverPopup");
-		//fader = GameObject.Find ("BackgroundFader");
+		gameOverText = gameOverPopup.transform.FindChild ("Info/Text").GetComponent<Text>();
 
 		gameOverPopup.SetActive (false);//Must set it active when launching, otherwise we cannot get instance to it.
 
@@ -276,9 +275,14 @@ public class GameManager : MonoBehaviour {
 	}
 
 	//Disable/Enable the GameOver popup (along with the fader)
-	public static void GameOver(bool show){
+	public static void GameOver(bool show, bool isSuccess){
 		gameOverPopup.SetActive (show);
-		//fader.SetActive (show);
+
+		if (isSuccess) {
+			gameOverText.text = "Successful";
+		} else {
+			gameOverText.text = "Failed";
+		}
 	}
 
 	//Setter for chevronActive variable

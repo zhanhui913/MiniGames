@@ -49,7 +49,7 @@ public class EnergyBar : MonoBehaviour {
 				//Game Over
 				GameManager.startGame = false;
 
-				GameManager.GameOver (true);
+				GameManager.GameOver (true, false);
 			}
 		}
 	}

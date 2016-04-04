@@ -35,7 +35,7 @@ public class Eating : MonoBehaviour {
 		Debug.Log ("need fish to win : "+GameManager.getNumFoodToWin ());
 		if(foodCount == GameManager.getNumFoodToWin()){
 			GameManager.setStartGame(false);
-			GameManager.GameOver(true);
+			GameManager.GameOver(true, true);
 			Debug.Log ("game overrr");
 		}
 	}
