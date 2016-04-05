@@ -70,7 +70,7 @@ public class GameManager : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		//After 2 seconds
-		if(!once && (Time.deltaTime* 1000 > 2)){
+		if(startGame && !once && (Time.deltaTime* 1000 > 2)){ Debug.LogWarning("create fedora");
 			GameObject fedora1 = (GameObject)Instantiate(fedora);
 			//fedora1.SetActive(true);
 			
@@ -301,6 +301,7 @@ public class GameManager : MonoBehaviour {
 
 	//Remove when done testing (dont include in production)
 	public void restartLevel(){
+		once = false;
 		Application.LoadLevel(0);
 	}
 }
