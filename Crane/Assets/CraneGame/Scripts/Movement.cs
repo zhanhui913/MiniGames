@@ -4,7 +4,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
 public class Movement : MonoBehaviour, IPointerDownHandler, IPointerUpHandler {
-	public string indi;
+	public AVATAR_DIRECTION aDirection;
 
 	private GameObject player;
 	private int direction = 0;
@@ -60,24 +60,23 @@ public class Movement : MonoBehaviour, IPointerDownHandler, IPointerUpHandler {
 		//Used to ensure only 1 chevron can be clicked at a time 
 		if( GameManager.getChevronActive() == "false"){  
 
-			GameManager.setChevronActive(indi); //Set which direction the chevron is being used.
+			GameManager.setChevronActive(aDirection.ToString()); //Set which direction the chevron is being used.
 
 			//Set animator parameter for avatar "Move" to true
 			CraneAnimator.SetBool ("Move",true);
-			
-			if(indi=="Left"){
-				direction = -1;
+
+			if(aDirection == AVATAR_DIRECTION.LEFT){
 				player.transform.localScale = new Vector2(-scaleX,player.transform.localScale.y);
-			}else if(indi == "Right"){
-				direction = 1;
+			}else if(aDirection == AVATAR_DIRECTION.RIGHT){
 				player.transform.localScale = new Vector2(scaleX,player.transform.localScale.y);
 			}
+			direction = (int)aDirection;
 		}
 	}
 
 	public void CustomMouseUp(){
 		//Used to ensure only 1 chevron can be clicked at a time 
-		if( GameManager.getChevronActive() == indi){ 
+		if( GameManager.getChevronActive() == aDirection.ToString()){ 
 			//Set animator parameter for avatar "Move" to false
 			CraneAnimator.SetBool ("Move",false);
 			direction = 0;
@@ -107,7 +106,7 @@ public class Movement : MonoBehaviour, IPointerDownHandler, IPointerUpHandler {
 			//Set animator parameter for avatar "bowDown" to true
 			CraneAnimator.SetBool ("BowDown",true);
 
-			GameManager.setChevronActive(indi); //Set which direction the chevron is being used.
+			GameManager.setChevronActive(aDirection.ToString()); //Set which direction the chevron is being used.
 		}
 	}
 
