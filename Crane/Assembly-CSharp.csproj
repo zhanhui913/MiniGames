@@ -58,7 +58,6 @@
      <Compile Include="Assets\CraneGame\Scripts\Fedora.cs" />
      <Compile Include="Assets\CraneGame\Scripts\FishBehaviour.cs" />
      <Compile Include="Assets\CraneGame\Scripts\GameManager.cs" />
-     <Compile Include="Assets\CraneGame\Scripts\LeftRightPanel.cs" />
      <Compile Include="Assets\CraneGame\Scripts\Movement.cs" />
      <Compile Include="Assets\CraneGame\Scripts\Parallaxing.cs" />
      <Compile Include="Assets\CraneGame\Scripts\PlayerHandler.cs" />

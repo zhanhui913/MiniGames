@@ -35,14 +35,11 @@ public class Movement : MonoBehaviour, IPointerDownHandler, IPointerUpHandler {
 			amountToMove.x = currentSpeed;
 			amountToMove.y = 0;
 			Move (amountToMove * Time.deltaTime);
-		}
 
-		if(GameManager.startGame){
-			//Check for touch input NGUI
 			if (onPressed) {
-				CustomMouseDown ();
+				ContinueWalk ();
 			} else {
-				CustomMouseUp ();
+				StopWalk ();
 			}
 		}
 	}
@@ -55,35 +52,7 @@ public class Movement : MonoBehaviour, IPointerDownHandler, IPointerUpHandler {
 		//Get Animation component
 		CraneAnimator = player.GetComponent<Animator>();
 	}
-
-	public void CustomMouseDown(){
-		//Used to ensure only 1 chevron can be clicked at a time 
-		if( GameManager.getChevronActive() == "false"){  
-
-			GameManager.setChevronActive(aDirection.ToString()); //Set which direction the chevron is being used.
-
-			//Set animator parameter for avatar "Move" to true
-			CraneAnimator.SetBool ("Move",true);
-
-			if(aDirection == AVATAR_DIRECTION.LEFT){
-				player.transform.localScale = new Vector2(-scaleX,player.transform.localScale.y);
-			}else if(aDirection == AVATAR_DIRECTION.RIGHT){
-				player.transform.localScale = new Vector2(scaleX,player.transform.localScale.y);
-			}
-			direction = (int)aDirection;
-		}
-	}
-
-	public void CustomMouseUp(){
-		//Used to ensure only 1 chevron can be clicked at a time 
-		if( GameManager.getChevronActive() == aDirection.ToString()){ 
-			//Set animator parameter for avatar "Move" to false
-			CraneAnimator.SetBool ("Move",false);
-			direction = 0;
-			GameManager.setChevronActive ("false");
-		}
-	}
-
+		
 	/**
 	 * Avatar will bow down facing left/right depending on the direction provided.
 	 * (If dir = 1, The user clicked on the right side of the waterContainer)
@@ -129,7 +98,7 @@ public class Movement : MonoBehaviour, IPointerDownHandler, IPointerUpHandler {
 		}
 	}
 
-	public void Move(Vector2 moveAmount){
+	private void Move(Vector2 moveAmount){
 		float deltaY = moveAmount.y;
 		float deltaX = moveAmount.x;
 		
@@ -147,6 +116,34 @@ public class Movement : MonoBehaviour, IPointerDownHandler, IPointerUpHandler {
 	public void OnPointerDown(PointerEventData eventData){
 		if (GameManager.startGame) {
 			onPressed = true;
+		}
+	}
+
+	private void ContinueWalk(){
+		//Used to ensure only 1 chevron can be clicked at a time 
+		if( GameManager.getChevronActive() == "false"){  
+
+			GameManager.setChevronActive(aDirection.ToString()); //Set which direction the chevron is being used.
+
+			//Set animator parameter for avatar "Move" to true
+			CraneAnimator.SetBool ("Move",true);
+
+			if(aDirection == AVATAR_DIRECTION.LEFT){
+				player.transform.localScale = new Vector2(-scaleX,player.transform.localScale.y);
+			}else if(aDirection == AVATAR_DIRECTION.RIGHT){
+				player.transform.localScale = new Vector2(scaleX,player.transform.localScale.y);
+			}
+			direction = (int)aDirection;
+		}
+	}
+
+	private void StopWalk(){
+		//Used to ensure only 1 chevron can be clicked at a time 
+		if( GameManager.getChevronActive() == aDirection.ToString()){ 
+			//Set animator parameter for avatar "Move" to false
+			CraneAnimator.SetBool ("Move",false);
+			direction = 0;
+			GameManager.setChevronActive ("false");
 		}
 	}
 }
