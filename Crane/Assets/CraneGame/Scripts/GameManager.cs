@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using System;
+using UnityEngine.SceneManagement;
 
 [Serializable]
 public class FishDetail{
@@ -28,30 +29,28 @@ public class GameManager : MonoBehaviour {
 
 	public FishDetail fish;
 
-	private float numberOfRandomSnails = 10;
-	private float numberOfRandomFrogs = 10;
-	private float numberOfRandomAlgaes = 10;
-
 	public GameObject SnailPrefab;
 	private float SnailYMinPos = -1.3f;
 	private float SnailYMaxPos = -0.5f;
+	private float numberOfRandomSnails = 10;
 
 	public GameObject FrogPrefab;
 	private float FrogYPos = -0.75f;
+	private float numberOfRandomFrogs = 10;
 
 	public GameObject[] AlgaesPrefabList;
 	private float AlgaesYMinPos = -0.04f;
 	private float AlgaesYMaxPos = 1.1f;
+	private float numberOfRandomAlgaes = 10;
 
 	private static GameObject avatarPopup;  //Avatar selection popup.
 	private static GameObject gameOverPopup; //Game over popup.
 	private static Text gameOverText;
 
-	private static GameObject fader;
 	private static string chevronActive = "false"; //Will be used to ensure that left/right chevron cannot be clicked simultaneously (left = left chevron is being used, right = right chevron is being used, false = unused)
 
 	private static bool once = false; //Only used to check once
-	public GameObject fedora;
+	public GameObject fedoraPrefab;
 
 	public Text foodCountText;
 	public const int NUM_FISH = 10;//The number of food required to win the game
@@ -90,16 +89,9 @@ public class GameManager : MonoBehaviour {
 	void Update () {
 		//After 2 seconds
 		if(startGame && !once && (Time.deltaTime* 1000 > 2)){ 
-			GameObject fedora1 = (GameObject)Instantiate(fedora);
-			//fedora1.SetActive(true);
-			
-			//Find a random x position in between the current screen
-			//float x = ;
-			
-
-			//put easterEgg under parent WaterContainer
-			fedora1.transform.parent = fish.waterContainer.transform;
-			fedora1.transform.localPosition = new Vector2(0,10);
+			GameObject fedora = (GameObject)Instantiate(fedoraPrefab);
+			fedora.transform.parent = fish.waterContainer.transform;
+			fedora.transform.localPosition = new Vector2(0,10);
 			once = true;
 		}
 	}
@@ -130,7 +122,6 @@ public class GameManager : MonoBehaviour {
 
 			//Create fishes around each spawnPoint
 			for(int a =0;a<fish.numFishInSpawn;a++){
-				Debug.LogWarning ("creat fish "+a+" at index "+i);
 				spawnFish(fish.fishSpawnList[i]);
 			}
 		}
@@ -286,13 +277,12 @@ public class GameManager : MonoBehaviour {
 		Time.timeScale = 1;
 	}
 
-	//Disable/Enable the Fader popup (along with the fader)
+	//Disable/Enable the avatar popup
 	public static void PopupShow(bool show){
 		avatarPopup.SetActive (show);
-		//fader.SetActive (show);
 	}
 
-	//Disable/Enable the GameOver popup (along with the fader)
+	//Disable/Enable the GameOver popup
 	public static void GameOver(bool show, bool isSuccess){
 		gameOverPopup.SetActive (show);
 
@@ -322,9 +312,8 @@ public class GameManager : MonoBehaviour {
 		}
 	}
 
-	//Remove when done testing (dont include in production)
 	public void restartLevel(){
 		once = false;
-		Application.LoadLevel(0);
+		SceneManager.LoadScene (0);
 	}
 }
