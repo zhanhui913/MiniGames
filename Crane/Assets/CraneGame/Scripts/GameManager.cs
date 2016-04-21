@@ -1,6 +1,22 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine.UI;
+using System;
+
+[Serializable]
+public class FishDetail{
+	public GameObject[] fishPrefabList; //The list of fishes
+	public GameObject waterContainer;//The parent container where the fish objects should be spawn under
+	public GameObject spawnPrefab;//The fishSpawnPoint prefab
+	public int numSpawn; //Number of spawns
+	public int numFishInSpawn;//Number of fishes around each spawn point.
+	public int fishSpawnRadius;//The radius to which the fishes will spawn within.
+	public float offsetSpawnFromSide;//The offset from the left & right x coordinate for the fish spawn points
+
+	[HideInInspector]
+	public List<GameObject> fishSpawnList = new List<GameObject> ();//The lists of spawn points prefabs of the fishes.
+}
 
 public class GameManager : MonoBehaviour {
 
@@ -10,31 +26,22 @@ public class GameManager : MonoBehaviour {
 	
 	public static GameManager self;
 
-	public GameObject[] fishPrefabList; //The list of fishes
-	public GameObject targetFishSpawnContainer; //The parent container where the fish objects should be spawn under
-	public float numFish;       //Number of fishes around each spawn point.
-	public float fishSpawnRadius = 10; //The radius to which the fishes will spawn within.
+	public FishDetail fish;
 
-	public GameObject fishSpawnPrefab;  //The fishSpawnPoint prefab
-	public GameObject[] fishSpawnPointsPrefabList; //The lists of spawn points prefabs of the fishes.
-	public float offsetFromSide;        //The offset from the left & right x coordinate for the fish spawn points
-
-	public float numberOfRandomSnails = 10;
-	public float numberOfRandomFrogs = 10;
-	public float numberOfRandomAlgaes = 10;
+	private float numberOfRandomSnails = 10;
+	private float numberOfRandomFrogs = 10;
+	private float numberOfRandomAlgaes = 10;
 
 	public GameObject SnailPrefab;
-	public float SnailYMinPos = -1.3f;
-	public float SnailYMaxPos = -0.5f;
+	private float SnailYMinPos = -1.3f;
+	private float SnailYMaxPos = -0.5f;
 
 	public GameObject FrogPrefab;
-	public float FrogYPos = -0.75f;
+	private float FrogYPos = -0.75f;
 
 	public GameObject[] AlgaesPrefabList;
-	public float AlgaesYMinPos = -0.04f;
-	public float AlgaesYMaxPos = 1.1f;
-
-	public const int NUM_FISH = 10;//The number of food required to win the game
+	private float AlgaesYMinPos = -0.04f;
+	private float AlgaesYMaxPos = 1.1f;
 
 	private static GameObject avatarPopup;  //Avatar selection popup.
 	private static GameObject gameOverPopup; //Game over popup.
@@ -46,10 +53,19 @@ public class GameManager : MonoBehaviour {
 	private static bool once = false; //Only used to check once
 	public GameObject fedora;
 
+	public Text foodCountText;
+	public const int NUM_FISH = 10;//The number of food required to win the game
+
+	public static Avatar avatarScript{
+		get{ 
+			return avatar.GetComponent<Avatar> ();
+		}	
+	}
+
 	void Awake(){
 		self = this;
 	}
-
+		
 	// Use this for initialization
 	void Start () {
 		avatarPopup = GameObject.Find ("AvatarSelectionPopup");
@@ -61,16 +77,19 @@ public class GameManager : MonoBehaviour {
 		//Pause time
 		Time.timeScale = 0;
 
-		//create a number spawn points specified by the user in the list fishSpawnPointsPrefabList;
-		createFishSpawnPoints (fishSpawnPointsPrefabList.Length);
+
+		//create a number spawn points specified by the user in the list fish.numSpawn
+		createFishSpawnPoints (fish.numSpawn);
 
 		spawnOthers ();
+
+		updateFoodCount (0);
 	}
 
 	// Update is called once per frame
 	void Update () {
 		//After 2 seconds
-		if(startGame && !once && (Time.deltaTime* 1000 > 2)){ Debug.LogWarning("create fedora");
+		if(startGame && !once && (Time.deltaTime* 1000 > 2)){ 
 			GameObject fedora1 = (GameObject)Instantiate(fedora);
 			//fedora1.SetActive(true);
 			
@@ -79,7 +98,7 @@ public class GameManager : MonoBehaviour {
 			
 
 			//put easterEgg under parent WaterContainer
-			fedora1.transform.parent = targetFishSpawnContainer.transform;
+			fedora1.transform.parent = fish.waterContainer.transform;
 			fedora1.transform.localPosition = new Vector2(0,10);
 			once = true;
 		}
@@ -89,31 +108,30 @@ public class GameManager : MonoBehaviour {
 	 * This function selects "num" fish spawn points that is equally distanced from each other.
 	 */ 
 	public void createFishSpawnPoints(int num){
-		targetFishSpawnContainer = GameObject.Find ("WaterContainer");
-
 		//Get the distance that each spawn point should exist within each other.
 		float distance = getWaterContainerWidth () / num;
-		float currentSpawnPoint = getFirstChildXPosRelParent(targetFishSpawnContainer);
+		float currentSpawnPoint = getFirstChildXPosRelParent(fish.waterContainer);
 
 		for(int i=0;i<num;i++){
-			if(i==0){
-				currentSpawnPoint += offsetFromSide;
-				fishSpawnPointsPrefabList[i] = (GameObject)Instantiate(fishSpawnPrefab);
+			if(i == 0){
+				currentSpawnPoint += fish.offsetSpawnFromSide;
+				fish.fishSpawnList.Add ((GameObject)Instantiate(fish.spawnPrefab));
 			}else{
 				currentSpawnPoint += distance;
-				fishSpawnPointsPrefabList[i] = (GameObject)Instantiate(fishSpawnPrefab);
+				fish.fishSpawnList.Add ((GameObject)Instantiate (fish.spawnPrefab));
 			}
 
 			//Get random y position relative to water container's position
-			float y = Random.Range (0f,0.5f);
+			float y = UnityEngine.Random.Range (0f,0.5f);
 
 			//Put the object under the parent WaterContainer
-			fishSpawnPointsPrefabList[i].transform.parent = targetFishSpawnContainer.transform;
-			fishSpawnPointsPrefabList[i].transform.localPosition = new Vector3(currentSpawnPoint,y,0f);
+			fish.fishSpawnList[i].transform.parent = fish.waterContainer.transform;
+			fish.fishSpawnList[i].transform.localPosition = new Vector3(currentSpawnPoint,y,0f);
 
-			//Create numFish of fishes around each spawnPoint
-			for(int a =0;a<numFish;a++){
-				spawnFish(fishSpawnPointsPrefabList[i]);
+			//Create fishes around each spawnPoint
+			for(int a =0;a<fish.numFishInSpawn;a++){
+				Debug.LogWarning ("creat fish "+a+" at index "+i);
+				spawnFish(fish.fishSpawnList[i]);
 			}
 		}
 	}
@@ -123,16 +141,16 @@ public class GameManager : MonoBehaviour {
 	 */
 	public void spawnFish(GameObject spawnObject){
 		//Randomly spawn fishes of different size
-		int fishIndex = Random.Range (0,2); //Because Random.Range is used with integers, it returns a number from min to max-1.
+		int fishIndex = UnityEngine.Random.Range (0,2); //Because UnityEngine.Random.Range is used with integers, it returns a number from min to max-1.
 
 		//Get random x and y position relative to the spawn point's position.
-		float x = Random.Range (-fishSpawnRadius,fishSpawnRadius);
-		float y = Random.Range (-0.85f,-1.35f);
+		float x = UnityEngine.Random.Range (-fish.fishSpawnRadius, fish.fishSpawnRadius);
+		float y = UnityEngine.Random.Range (-0.85f,-1.35f);
 
 		//Create random fish direction
-		int direction = Random.Range (0,2); //Because Random.Range is used with integers, it returns a number from min to max-1.
+		int direction = UnityEngine.Random.Range (0,2); //Because UnityEngine.Random.Range is used with integers, it returns a number from min to max-1.
 
-		GameObject f = (GameObject)Instantiate (fishPrefabList[fishIndex]);
+		GameObject f = (GameObject)Instantiate (fish.fishPrefabList[fishIndex]);
 		f.transform.parent = spawnObject.transform;
 		f.transform.localPosition = new Vector3 (x,y,0f);
 		if (direction == 0) {
@@ -152,7 +170,7 @@ public class GameManager : MonoBehaviour {
 
 		//Spawn Algaes
 		for(int a = 0; a < numberOfRandomAlgaes ;a++){
-			int index = Random.Range (0,2); //Because Random.Range is used with integers, it returns a number from min to max-1.
+			int index = UnityEngine.Random.Range (0,2); //Because UnityEngine.Random.Range is used with integers, it returns a number from min to max-1.
 			spawnAlgae(index, xMin, xMax, AlgaesYMinPos, AlgaesYMaxPos);
 		}
 
@@ -171,12 +189,12 @@ public class GameManager : MonoBehaviour {
 	 * Spawns 1 of 2 different algaes depending on index at random x and y position (within the constraints provided in parameter)
 	 */ 
 	public void spawnAlgae(int index, float xMin, float xMax, float yMin, float yMax){
-		float x = Random.Range (xMin,xMax);
-		float y = Random.Range (yMin,yMax);
-		float direction = Random.Range (0,2);
+		float x = UnityEngine.Random.Range (xMin,xMax);
+		float y = UnityEngine.Random.Range (yMin,yMax);
+		float direction = UnityEngine.Random.Range (0,2);
 
 		GameObject a = (GameObject)Instantiate (AlgaesPrefabList[index]);
-		a.transform.parent = targetFishSpawnContainer.transform;
+		a.transform.parent = fish.waterContainer.transform;
 		a.transform.localPosition = new Vector2 (x,y);
 		if(direction == 0){ //Have it face left
 			a.transform.localScale = new Vector2(a.transform.localScale.x,a.transform.localScale.y);
@@ -190,12 +208,12 @@ public class GameManager : MonoBehaviour {
 	 * The y position is fixed as frogs float at water level.
 	 */ 
 	public void spawnFrog(float xMin, float xMax, float yFix){
-		float x = Random.Range (xMin,xMax);
+		float x = UnityEngine.Random.Range (xMin,xMax);
 		float y = yFix;
-		float direction = Random.Range (0,2);
+		float direction = UnityEngine.Random.Range (0,2);
 		
 		GameObject f = (GameObject)Instantiate (FrogPrefab);
-		f.transform.parent = targetFishSpawnContainer.transform;
+		f.transform.parent = fish.waterContainer.transform;
 		f.transform.localPosition = new Vector2 (x,y);
 		if(direction == 0){ //Have it face left
 			f.transform.localScale = new Vector2(f.transform.localScale.x,f.transform.localScale.y);
@@ -208,12 +226,12 @@ public class GameManager : MonoBehaviour {
 	 * Spawn snails at random x and y position (within the constraints provided in parameter)
 	 */ 
 	public void spawnSnail(float xMin, float xMax, float yMin, float yMax){
-		float x = Random.Range (xMin, xMax);
-		float y = Random.Range (yMin,yMax);
-		float direction = Random.Range (0,2);
+		float x = UnityEngine.Random.Range (xMin, xMax);
+		float y = UnityEngine.Random.Range (yMin,yMax);
+		float direction = UnityEngine.Random.Range (0,2);
 		
 		GameObject s = (GameObject)Instantiate (SnailPrefab);
-		s.transform.parent = targetFishSpawnContainer.transform;
+		s.transform.parent = fish.waterContainer.transform;
 		s.transform.localPosition = new Vector2 (x,y);
 		if(direction == 0){ //Have it face left
 			s.transform.localScale = new Vector2(s.transform.localScale.x,s.transform.localScale.y);
@@ -295,8 +313,13 @@ public class GameManager : MonoBehaviour {
 		return chevronActive;
 	}
 
-	public static int getNumFoodToWin(){
-		return NUM_FISH;
+	public void updateFoodCount(int foodNumber){
+		foodCountText.text = "Food Eaten : " + foodNumber;
+
+		if (foodNumber >= NUM_FISH) {
+			GameManager.setStartGame(false);
+			GameManager.GameOver(true, true);
+		}
 	}
 
 	//Remove when done testing (dont include in production)

@@ -14,7 +14,7 @@ public class Avatar : MonoBehaviour {
 	private GameObject player;
 	private Animator animator;
 
-	public AVATAR_DIRECTION avatarDirection;
+	private AVATAR_DIRECTION avatarDirection;
 
 	//Player Handling
 	private const float SPEED = 4;
@@ -53,15 +53,17 @@ public class Avatar : MonoBehaviour {
 	 * Then depending on what direction the avatar is currently facing, different x scales 
 	 * will be applied to it to face the new or same direction.
 	 */
-	public void BowDown(AVATAR_DIRECTION bowDownDirection){
+	public void BowDown(AVATAR_DIRECTION bowDownDirection){ 
 		//Only allow user to bow down if the left & right chevron is not active
 		if(GameManager.getChevronActive() == "false"){
 			float tempXScale= 0;
 			if(bowDownDirection == AVATAR_DIRECTION.LEFT){
-				tempXScale = -player.transform.localScale.x;
+				tempXScale = -1 * Mathf.Abs(player.transform.localScale.x);
 			}else{
 				tempXScale = Mathf.Abs(player.transform.localScale.x);
 			}
+
+			avatarDirection = bowDownDirection;
 
 			player.transform.localScale = new Vector2 (tempXScale, player.transform.localScale.y);
 

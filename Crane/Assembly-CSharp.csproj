@@ -51,17 +51,15 @@
      <Compile Include="Assets\Base\Tiling.cs" />
      <Compile Include="Assets\CraneGame\Scripts\Avatar.cs" />
      <Compile Include="Assets\CraneGame\Scripts\AvatarMenu.cs" />
+     <Compile Include="Assets\CraneGame\Scripts\Beak.cs" />
      <Compile Include="Assets\CraneGame\Scripts\BowDown.cs" />
      <Compile Include="Assets\CraneGame\Scripts\CameraControl.cs" />
-     <Compile Include="Assets\CraneGame\Scripts\Eating.cs" />
      <Compile Include="Assets\CraneGame\Scripts\EnergyBar.cs" />
      <Compile Include="Assets\CraneGame\Scripts\Fedora.cs" />
      <Compile Include="Assets\CraneGame\Scripts\FishBehaviour.cs" />
      <Compile Include="Assets\CraneGame\Scripts\GameManager.cs" />
      <Compile Include="Assets\CraneGame\Scripts\Movement.cs" />
      <Compile Include="Assets\CraneGame\Scripts\Parallaxing.cs" />
-     <Compile Include="Assets\CraneGame\Scripts\PlayerHandler.cs" />
-     <Compile Include="Assets\CraneGame\Scripts\PlayerPhysics.cs" />
      <Compile Include="Assets\CraneGame\Scripts\Timer.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>/Applications/Unity5341/Unity5341.app/Contents/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>

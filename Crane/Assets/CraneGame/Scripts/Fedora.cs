@@ -18,11 +18,11 @@ public class Fedora : MonoBehaviour {
 			//transform.position = new Vector2 (transform.position.x, -y * Time.deltaTime * 10);
 			if(y < 0.22){
 
-				Debug.Log ("stop updating fedora position");
+				//Debug.Log ("stop updating fedora position");
 			}else{
 				y -= Time.deltaTime ;
 				this.transform.localPosition = new Vector2(transform.localPosition.x,y);
-				Debug.Log ("updating fedora position");
+				//Debug.Log ("updating fedora position");
 			}
 		}
 	}

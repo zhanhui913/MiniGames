@@ -5,31 +5,32 @@ using UnityEngine.EventSystems;
 
 public class BowDown : MonoBehaviour , IPointerDownHandler, IPointerUpHandler{
 
-	public Movement movement;
 	public AVATAR_DIRECTION direction;
 
 	private bool onPressed = false;
 	private bool once = false; //Only ensure bowUp happen once after bownDown in the update().
-	
-	// Use this for initialization
-	void Start () {
-	}
 	
 	// Update is called once per frame
 	void Update () {
 		if(GameManager.startGame){
 			//Check for touch input NGUI
 			if (onPressed) {
-				movement.BowDown((int)direction);
+				GameManager.avatarScript.BowDown (direction);
 				once = true;
 			}else{
 				if(once){
-					movement.BowUp();
+					GameManager.avatarScript.BowUp();
 					once = false;
 				}
 			}
 		}
 	}
+		
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	/// 
+	/// Pointer up and down
+	/// 
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	public void OnPointerUp(PointerEventData eventData){
 		if (GameManager.startGame) {
@@ -38,7 +39,7 @@ public class BowDown : MonoBehaviour , IPointerDownHandler, IPointerUpHandler{
 	}
 
 	public void OnPointerDown(PointerEventData eventData){
-		if (GameManager.startGame) {
+		if (GameManager.startGame) {			
 			onPressed = true;
 		}
 	}

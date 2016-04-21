@@ -21,10 +21,6 @@ public class Movement : MonoBehaviour, IPointerDownHandler, IPointerUpHandler {
 	private bool onPressed = false;
 
 	private Animator CraneAnimator;
-
-	// Use this for initialization
-	void Start () {
-	}
 	
 	// Update is called once per frame
 	void Update () {
@@ -52,39 +48,6 @@ public class Movement : MonoBehaviour, IPointerDownHandler, IPointerUpHandler {
 		//Get Animation component
 		CraneAnimator = player.GetComponent<Animator>();
 	}
-		
-	/**
-	 * Avatar will bow down facing left/right depending on the direction provided.
-	 * (If dir = 1, The user clicked on the right side of the waterContainer)
-	 * (If dir = -1, The user clicked on the left side of the waterContainer)
-	 * Then depending on what direction the avatar is currently facing, different x scales 
-	 * will be applied to it to face the new or same direction.
-	 */ 
-	public void BowDown(int dir){
-		//Only allow user to bow down if the left & right chevron is not active
-		if(GameManager.getChevronActive() == "false"){
-			float tempXScale= 0;
-			if(player.transform.localScale.x < 0){ //If avatar was facing left
-				tempXScale = (-1 * dir) * player.transform.localScale.x;
-			}else if(player.transform.localScale.x > 0){ //If avatar was facing right
-				tempXScale = dir * player.transform.localScale.x;
-			}
-			
-			player.transform.localScale = new Vector2 (tempXScale, player.transform.localScale.y);
-			
-			//Set animator parameter for avatar "bowDown" to true
-			CraneAnimator.SetBool ("BowDown",true);
-
-			GameManager.setChevronActive(aDirection.ToString()); //Set which direction the chevron is being used.
-		}
-	}
-
-	public void BowUp(){
-		if(GameManager.getChevronActive() == "false"){
-			//Set animator parameter for avatar "bowDown" to false
-			CraneAnimator.SetBool ("BowDown",false);
-		}
-	}
 
 	//Increment n towards target by speed
 	private float IncrementTowards(float n, float target, float a){
@@ -105,18 +68,6 @@ public class Movement : MonoBehaviour, IPointerDownHandler, IPointerUpHandler {
 		Vector2 finalTransform = new Vector2(deltaX, deltaY);
 		
 		player.transform.Translate (finalTransform);
-	}
-
-	public void OnPointerUp(PointerEventData eventData){
-		if (GameManager.startGame) {
-			onPressed = false;
-		}
-	}
-
-	public void OnPointerDown(PointerEventData eventData){
-		if (GameManager.startGame) {
-			onPressed = true;
-		}
 	}
 
 	private void ContinueWalk(){
@@ -144,6 +95,24 @@ public class Movement : MonoBehaviour, IPointerDownHandler, IPointerUpHandler {
 			CraneAnimator.SetBool ("Move",false);
 			direction = 0;
 			GameManager.setChevronActive ("false");
+		}
+	}
+
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	/// 
+	/// Pointer up and down
+	/// 
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	public void OnPointerUp(PointerEventData eventData){
+		if (GameManager.startGame) {
+			onPressed = false;
+		}
+	}
+
+	public void OnPointerDown(PointerEventData eventData){
+		if (GameManager.startGame) {
+			onPressed = true;
 		}
 	}
 }
