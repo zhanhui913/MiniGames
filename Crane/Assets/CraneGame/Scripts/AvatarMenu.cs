@@ -21,14 +21,10 @@ public class AvatarMenu : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-
-		craneCharacter.characterObject.gameObject.SetActive (false);
-		flamingoCharacter.characterObject.gameObject.SetActive (false);
-
 		craneCharacter.characterButton.onClick.AddListener (() => characterSelect(craneCharacter.characterObject));
 		flamingoCharacter.characterButton.onClick.AddListener (() => characterSelect(flamingoCharacter.characterObject));
 	}
-	
+
 	private void characterSelect(GameObject avatarObject){
 		avatarObject.gameObject.SetActive (true);
 

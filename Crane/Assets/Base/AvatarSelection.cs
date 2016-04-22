@@ -13,12 +13,13 @@ public class AvatarSelection :  HorizontalListCreator{
 
 	void Start(){
 		base.Start();
+		setData ();
 	}
 
-	public void setData(List<GameObject> list){
-		for(int i = 0; i < list.Count; i++){
+	public void setData(List<GameObject> list = null){
+		for(int i = 0; i < 10; i++){
 			Transform t = Instantiate(item, Vector3.zero, Quaternion.identity) as Transform;
-
+			Debug.LogWarning ("instantiate obj "+i);
 			//t.GetComponent<PoliceItem> ().item = t;
 			gaList.Add(t.gameObject);
 
