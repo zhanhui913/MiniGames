@@ -45,8 +45,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Base\AvatarSelection.cs" />
      <Compile Include="Assets\Base\Container.cs" />
      <Compile Include="Assets\Base\FPS.cs" />
+     <Compile Include="Assets\Base\HorizontalListCreator.cs" />
      <Compile Include="Assets\Base\Tiling.cs" />
      <Compile Include="Assets\CraneGame\Scripts\Avatar.cs" />
      <Compile Include="Assets\CraneGame\Scripts\AvatarMenu.cs" />
