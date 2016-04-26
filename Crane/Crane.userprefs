@@ -1,11 +1,10 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/CraneGame/Scripts/Beak.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Base/AvatarSelection.cs">
     <Files>
-      <File FileName="Assets/CraneGame/Scripts/Avatar.cs" Line="29" Column="31" />
-      <File FileName="Assets/CraneGame/Scripts/Beak.cs" Line="10" Column="28" />
-      <File FileName="Assets/CraneGame/Scripts/GameManager.cs" Line="172" Column="4" />
-      <File FileName="Assets/CraneGame/Scripts/Fedora.cs" Line="25" Column="7" />
+      <File FileName="Assets/Base/AvatarSelection.cs" Line="29" Column="6" />
+      <File FileName="Assets/CraneGame/Scripts/AvatarMenu.cs" Line="7" Column="24" />
+      <File FileName="Assets/CraneGame/Scripts/Avatar.cs" Line="43" Column="29" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

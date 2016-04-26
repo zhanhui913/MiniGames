@@ -67,8 +67,8 @@ public class GameManager : MonoBehaviour {
 		
 	// Use this for initialization
 	void Start () {
-		avatarPopup = GameObject.Find ("AvatarSelectionPopup");
-		gameOverPopup = GameObject.Find ("GameOverPopup");
+		avatarPopup = GameObject.FindGameObjectWithTag ("AvatarSelectionPopup");
+		gameOverPopup = GameObject.FindGameObjectWithTag ("GameOverPopup");
 		gameOverText = gameOverPopup.transform.FindChild ("Info/Text").GetComponent<Text>();
 
 		gameOverPopup.SetActive (false);//Must set it active when launching, otherwise we cannot get instance to it.

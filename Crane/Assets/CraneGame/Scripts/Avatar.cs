@@ -9,7 +9,11 @@ public enum AVATAR_DIRECTION{
 	RIGHT = 1
 }
 	
+[Serializable]
 public class Avatar : MonoBehaviour {
+
+	public Sprite imageAvatar;
+	public String nameForDebug;
 
 	private GameObject player;
 	private Animator animator;
@@ -44,6 +48,13 @@ public class Avatar : MonoBehaviour {
 			amountToMove.y = 0;
 			Move (amountToMove * Time.deltaTime);
 		}
+	}
+
+	public void SetAvatar(){
+		Debug.LogWarning ("setting avatar "+nameForDebug);
+		GameManager.PopupShow(false);
+		GameManager.setStartGame (true);
+		GameManager.setAvatar (this.gameObject);
 	}
 
 	/**

@@ -41,7 +41,7 @@ public class Movement : MonoBehaviour, IPointerDownHandler, IPointerUpHandler {
 	}
 
 	//Might not need this and set avatar variable in update or start instead
-	public void setAvatarMovement(GameObject avatar){
+	public void setAvatarMovement(GameObject avatar){ 
 		player = avatar;
 		scaleX = player.transform.localScale.x; 
 		
