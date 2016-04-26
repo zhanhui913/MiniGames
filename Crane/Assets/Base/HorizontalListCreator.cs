@@ -9,7 +9,6 @@ public class Padding{
 	public float top, bottom, middle, left, right;
 }
 
-
 public class HorizontalListCreator : MonoBehaviour {
 
 	/**
@@ -70,7 +69,6 @@ public class HorizontalListCreator : MonoBehaviour {
 
 	private void UpdatePosition(Transform obj, int index, int lastIndex){
 		float topPadding = padding.top * parentRect.rect.height;
-		float middleHorizontalPadding = topPadding;
 		float bottomPadding = padding.bottom * parentRect.rect.height;
 		float leftPadding = padding.left * parentRect.rect.width;
 		float middleVerticalPadding = padding.middle * parentRect.rect.width;
@@ -106,7 +104,6 @@ public class HorizontalListCreator : MonoBehaviour {
 			itemWidth = (int)(itemWidthPercent * parentRect.rect.width );
 			itemHeight = (int)(itemRelHeight * parentRect.rect.height);
 		} else {
-
 			itemWidth = (int)(itemWidthPercent * (Screen.height * itemWidthPercent));
 			itemHeight = (int)(itemRelHeight * (Screen.height * itemWidthPercent));
 		}

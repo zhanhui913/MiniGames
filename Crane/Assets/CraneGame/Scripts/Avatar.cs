@@ -13,7 +13,6 @@ public enum AVATAR_DIRECTION{
 public class Avatar : MonoBehaviour {
 
 	public Sprite imageAvatar;
-	public String nameForDebug;
 
 	private GameObject player;
 	private Animator animator;
@@ -51,7 +50,6 @@ public class Avatar : MonoBehaviour {
 	}
 
 	public void SetAvatar(){
-		Debug.LogWarning ("setting avatar "+nameForDebug);
 		GameManager.PopupShow(false);
 		GameManager.setStartGame (true);
 		GameManager.setAvatar (this.gameObject);

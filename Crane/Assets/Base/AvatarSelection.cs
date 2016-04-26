@@ -8,6 +8,9 @@ public class AvatarSelection :  HorizontalListCreator{
 	private List<GameObject> gaList = new List<GameObject>();
 	private List<Avatar> avatarList;
 
+	private const int MAX_AVATAR_SCROLL = 4;
+	public Sprite blankSprite;
+
 	public GameObject leftPanel, rightPanel;
 
 	public override void Awake(){
@@ -22,40 +25,87 @@ public class AvatarSelection :  HorizontalListCreator{
 	public void setData(List<Avatar> avatarList){
 		this.avatarList = avatarList;
 
-		for(int i = 0; i < avatarList.Count; i++){
-			Avatar ava = avatarList [i];
-			Transform go = Instantiate(item, Vector3.zero, Quaternion.identity) as Transform;
-			go.SetParent (this.parentRect.transform);
-			Debug.LogWarning ("ava ref "+ava.nameForDebug);
+		if (avatarList.Count <= MAX_AVATAR_SCROLL && avatarList.Count > 0) { Debug.LogWarning ("there are less than 4");
+			//Disable scroll
+			this.transform.parent.GetComponent<ScrollRect>().enabled = false;
 
-			//Set the image of the avatar for the button in the avatar selection menu popup
-			go.GetComponent<Image> ().sprite = ava.imageAvatar;
+			//Do not use value "itemWidthPercent" set in public, change its value based on left, right, and middle padding
+			float newItemWidthPercent = (1 - padding.left - padding.right - (padding.middle * (avatarList.Count - 1))) / avatarList.Count;
 
-			go.GetComponent<Button> ().onClick.AddListener (() => {
-				Debug.LogWarning ("ava click "+ava.nameForDebug);
-				HideAvatarsExcept(ava);
-				ava.SetAvatar();
+			//float newItemWidthPercent = (1 - padding.left - padding.right - (padding.middle * (MAX_AVATAR_SCROLL - 1))) / MAX_AVATAR_SCROLL;
 
-				//Let movement script know it can fetch the avatar information
-				leftPanel.GetComponent<Movement> ().setAvatarMovement (ava.gameObject);
-				rightPanel.GetComponent<Movement> ().setAvatarMovement (ava.gameObject);
-			});
+			Debug.LogWarning("value to use as itemWidthPercent is "+newItemWidthPercent);
+			itemWidthPercent = newItemWidthPercent;
 
-			gaList.Add(go.gameObject);
+			int diff = MAX_AVATAR_SCROLL - avatarList.Count;
+
+			//Create those avatars
+			for (int i = 0; i < avatarList.Count; i++) {
+				Avatar ava = avatarList [i];
+				Transform go = Instantiate (item, Vector3.zero, Quaternion.identity) as Transform;
+				go.SetParent (this.parentRect.transform);
+
+				//Set the image of the avatar for the button in the avatar selection menu popup
+				go.GetComponent<Image> ().sprite = ava.imageAvatar;
+
+				go.GetComponent<Button> ().onClick.AddListener (() => {
+					HideAvatarsExcept (ava);
+					ava.SetAvatar ();
+
+					//Let movement script know it can fetch the avatar information
+					leftPanel.GetComponent<Movement> ().setAvatarMovement (ava.gameObject);
+					rightPanel.GetComponent<Movement> ().setAvatarMovement (ava.gameObject);
+				});
+				gaList.Add (go.gameObject);
+			}
+
+			//Create remaining blank avatars
+			for(int i = 0; i < diff; i++){
+				Transform go = Instantiate (item, Vector3.zero, Quaternion.identity) as Transform;
+				go.SetParent (this.parentRect.transform);
+
+				//Set the image of the avatar for the button in the avatar selection menu popup
+				go.GetComponent<Image> ().sprite = blankSprite;
+
+				gaList.Add (go.gameObject);
+			}
+
+			base.Reposition (gaList);
+		} else if (avatarList.Count > MAX_AVATAR_SCROLL) {
+			//Enable scroll
+			this.transform.parent.GetComponent<ScrollRect>().enabled = true;
+
+			//Use value "itemWidthPercent" set in public
+		
+			//Create those avatars
+			for (int i = 0; i < avatarList.Count; i++) {
+				Avatar ava = avatarList [i];
+				Transform go = Instantiate (item, Vector3.zero, Quaternion.identity) as Transform;
+				go.SetParent (this.parentRect.transform);
+
+				//Set the image of the avatar for the button in the avatar selection menu popup
+				go.GetComponent<Image> ().sprite = ava.imageAvatar;
+
+				go.GetComponent<Button> ().onClick.AddListener (() => {
+					HideAvatarsExcept (ava);
+					ava.SetAvatar ();
+
+					//Let movement script know it can fetch the avatar information
+					leftPanel.GetComponent<Movement> ().setAvatarMovement (ava.gameObject);
+					rightPanel.GetComponent<Movement> ().setAvatarMovement (ava.gameObject);
+				});
+				gaList.Add (go.gameObject);
+			}
+		} else {
+			throw new UnityException ("Need to have at least 1 Avatar data in the list.");
 		}
-			
-		base.Reposition (gaList);
 	}
 
 	public void HideAvatarsExcept(Avatar ava){
-		Debug.LogWarning ("dont hide "+ava.nameForDebug);
 		for(int i = 0; i < avatarList.Count; i++){
 			Avatar avaRef = avatarList [i];
 
-			Debug.LogWarning ("comparing ref("+avaRef.GetInstanceID()+") "+avaRef.nameForDebug +" with ("+ava.GetInstanceID()+") "+ava.nameForDebug);
-
 			if(avaRef.GetInstanceID() != ava.GetInstanceID()){
-				Debug.LogWarning ("hide avatar "+ava.nameForDebug);	
 				avaRef.gameObject.SetActive (false);
 			}
 		}
