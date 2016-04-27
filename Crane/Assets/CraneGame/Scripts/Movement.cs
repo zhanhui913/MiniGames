@@ -20,7 +20,9 @@ public class Movement : MonoBehaviour, IPointerDownHandler, IPointerUpHandler {
 	private Vector2 amountToMove;
 	private bool onPressed = false;
 
-	private Animator CraneAnimator;
+	private const string MOVE = "Move";
+
+	private Animator Animator;
 	
 	// Update is called once per frame
 	void Update () {
@@ -46,7 +48,7 @@ public class Movement : MonoBehaviour, IPointerDownHandler, IPointerUpHandler {
 		scaleX = player.transform.localScale.x; 
 		
 		//Get Animation component
-		CraneAnimator = player.GetComponent<Animator>();
+		Animator = player.GetComponent<Animator>();
 	}
 
 	//Increment n towards target by speed
@@ -77,7 +79,7 @@ public class Movement : MonoBehaviour, IPointerDownHandler, IPointerUpHandler {
 			GameManager.setChevronActive(aDirection.ToString()); //Set which direction the chevron is being used.
 
 			//Set animator parameter for avatar "Move" to true
-			CraneAnimator.SetBool ("Move",true);
+			Animator.SetBool (MOVE,true);
 
 			if(aDirection == AVATAR_DIRECTION.LEFT){
 				player.transform.localScale = new Vector2(-scaleX,player.transform.localScale.y);
@@ -92,7 +94,7 @@ public class Movement : MonoBehaviour, IPointerDownHandler, IPointerUpHandler {
 		//Used to ensure only 1 chevron can be clicked at a time 
 		if( GameManager.getChevronActive() == aDirection.ToString()){ 
 			//Set animator parameter for avatar "Move" to false
-			CraneAnimator.SetBool ("Move",false);
+			Animator.SetBool (MOVE,false);
 			direction = 0;
 			GameManager.setChevronActive ("false");
 		}

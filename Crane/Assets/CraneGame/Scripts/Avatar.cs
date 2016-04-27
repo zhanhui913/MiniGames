@@ -31,6 +31,9 @@ public class Avatar : MonoBehaviour {
 	private float targetSpeed;
 	private Vector2 amountToMove;
 
+	private const string BOW_DOWN = "BowDown";
+	private const string MOVE = "Move";
+
 	// Use this for initialization
 	void Start () {
 		animator = GetComponent<Animator> ();
@@ -77,7 +80,7 @@ public class Avatar : MonoBehaviour {
 			player.transform.localScale = new Vector2 (tempXScale, player.transform.localScale.y);
 
 			//Set animator parameter for avatar "bowDown" to true
-			animator.SetBool ("BowDown",true);
+			animator.SetBool (BOW_DOWN,true);
 
 			GameManager.setChevronActive(avatarDirection.ToString()); //Set which direction the chevron is being used.
 		}
@@ -85,24 +88,24 @@ public class Avatar : MonoBehaviour {
 
 	public void BowUp(){
 		//Set animator parameter for avatar "bowDown" to false
-		animator.SetBool ("BowDown",false);
+		animator.SetBool (BOW_DOWN,false);
 	}
 
 	public void Walk(AVATAR_DIRECTION walkDirection){
 		//Used to ensure only 1 chevron can be clicked at a time 
 		if( GameManager.getChevronActive() == avatarDirection.ToString()){ 
 			//Set animator parameter for avatar "Move" to false
-			animator.SetBool ("Move",false);
+			animator.SetBool (MOVE,false);
 			direction = 0;
 			GameManager.setChevronActive ("false");
 		}
 	}
 
-	public void CustomMouseUp(){
+	public void CustomMouseUp(){ Debug.LogWarning ("custom mouse up");
 		//Used to ensure only 1 chevron can be clicked at a time 
 		if( GameManager.getChevronActive() == avatarDirection.ToString()){ 
 			//Set animator parameter for avatar "Move" to false
-			animator.SetBool ("Move",false);
+			animator.SetBool (MOVE,false);
 			direction = 0;
 			GameManager.setChevronActive ("false");
 		}
@@ -115,7 +118,7 @@ public class Avatar : MonoBehaviour {
 			GameManager.setChevronActive(avatarDirection.ToString()); //Set which direction the chevron is being used.
 
 			//Set animator parameter for avatar "Move" to true
-			animator.SetBool ("Move",true);
+			animator.SetBool (MOVE,true);
 
 			if(avatarDirection == AVATAR_DIRECTION.LEFT){
 				direction = -1;
