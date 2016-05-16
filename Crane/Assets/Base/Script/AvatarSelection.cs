@@ -8,13 +8,19 @@ public class AvatarSelection :  HorizontalListCreator{
 	private List<GameObject> gaList = new List<GameObject>();
 	private List<Avatar> avatarList;
 
-	private const int MAX_AVATAR_SCROLL = 4;
+	private const int MAX_AVATAR_SCROLL = 3;
 	public Sprite blankSprite;
 
 	public GameObject leftPanel, rightPanel;
 
 	public override void Awake(){
 		base.Awake ();
+
+		//set the container to be the same width as the scroll view as its anchor is to the left
+		parentRect.anchorMin = Vector2.zero;
+		parentRect.anchorMax = Vector2.one;
+		parentRect.offsetMin = Vector2.zero;
+		parentRect.offsetMax = Vector2.one;
 	}
 
 	public override void Start(){
@@ -30,7 +36,7 @@ public class AvatarSelection :  HorizontalListCreator{
 			this.transform.parent.GetComponent<ScrollRect>().enabled = false;
 
 			//Do not use value "itemWidthPercent" set in public, change its value based on left, right, and middle padding
-			float newItemWidthPercent = (1 - padding.left - padding.right - (padding.middle * (avatarList.Count - 1))) / avatarList.Count;
+			float newItemWidthPercent = (1 - padding.left - padding.right - (padding.middle * (avatarList.Count - 1))) / (avatarList.Count);
 
 			//float newItemWidthPercent = (1 - padding.left - padding.right - (padding.middle * (MAX_AVATAR_SCROLL - 1))) / MAX_AVATAR_SCROLL;
 
@@ -99,6 +105,9 @@ public class AvatarSelection :  HorizontalListCreator{
 		} else {
 			throw new UnityException ("Need to have at least 1 Avatar data in the list.");
 		}
+
+		//Reset the anchor max
+		parentRect.anchorMax = Vector2.up;
 	}
 
 	public void HideAvatarsExcept(Avatar ava){
