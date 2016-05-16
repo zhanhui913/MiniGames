@@ -91,6 +91,8 @@ public class HorizontalListCreator : MonoBehaviour {
 			containerWidth = Mathf.Abs(currentX + itemWidth + leftPadding); //left padding to be same value as right padding
 
 			parentRect.sizeDelta = new Vector2(containerWidth, containerHeight);
+
+			Debug.LogWarning ("repositioned last item");
 		}
 	}
 
@@ -117,10 +119,12 @@ public class HorizontalListCreator : MonoBehaviour {
 			for(int i = 0 ; i < list.Count; i++){
 				PositionThisObject(list[i].transform,i, list.Count);
 			}
+			doneReposition ();
 		}else{ 
 			for(int i = 0 ; i < this.transform.childCount; i++){
 				PositionThisObject(this.transform.GetChild(i), i, this.transform.childCount);
 			}
+			doneReposition ();
 		}
 	}
 
@@ -128,4 +132,6 @@ public class HorizontalListCreator : MonoBehaviour {
 		currentIndex = 0;
 		currentX = currentY = 0.0f;
 	}
+
+	public virtual void doneReposition (){}
 }

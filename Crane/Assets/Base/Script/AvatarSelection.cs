@@ -8,7 +8,7 @@ public class AvatarSelection :  HorizontalListCreator{
 	private List<GameObject> gaList = new List<GameObject>();
 	private List<Avatar> avatarList;
 
-	private const int MAX_AVATAR_SCROLL = 3;
+	private const int MAX_AVATAR_SCROLL = 4;
 	public Sprite blankSprite;
 
 	public GameObject leftPanel, rightPanel;
@@ -36,14 +36,14 @@ public class AvatarSelection :  HorizontalListCreator{
 			this.transform.parent.GetComponent<ScrollRect>().enabled = false;
 
 			//Do not use value "itemWidthPercent" set in public, change its value based on left, right, and middle padding
-			float newItemWidthPercent = (1 - padding.left - padding.right - (padding.middle * (avatarList.Count - 1))) / (avatarList.Count);
+			float newItemWidthPercent = (1 - padding.left - padding.right - (padding.middle * (MAX_AVATAR_SCROLL- 1))) / (MAX_AVATAR_SCROLL);
 
 			//float newItemWidthPercent = (1 - padding.left - padding.right - (padding.middle * (MAX_AVATAR_SCROLL - 1))) / MAX_AVATAR_SCROLL;
 
 			Debug.LogWarning("value to use as itemWidthPercent is "+newItemWidthPercent);
 			itemWidthPercent = newItemWidthPercent;
 
-			int diff = MAX_AVATAR_SCROLL - avatarList.Count;
+			int diff = MAX_AVATAR_SCROLL - avatarList.Count; Debug.LogWarning ("diff : "+diff);
 
 			//Create those avatars
 			for (int i = 0; i < avatarList.Count; i++) {
@@ -102,6 +102,8 @@ public class AvatarSelection :  HorizontalListCreator{
 				});
 				gaList.Add (go.gameObject);
 			}
+
+			base.Reposition ();
 		} else {
 			throw new UnityException ("Need to have at least 1 Avatar data in the list.");
 		}
@@ -118,5 +120,14 @@ public class AvatarSelection :  HorizontalListCreator{
 				avaRef.gameObject.SetActive (false);
 			}
 		}
+	}
+
+	public override void doneReposition(){
+		Debug.LogWarning ("done reposition");
+		//go through list and change pivot point of each item
+
+		/*for(int i = 0; i < avatarList.Count; i++){
+			this.parentRect.transform.GetChild (i).GetComponent<RectTransform> ().pivot = new Vector2 (0.5f, 0.5f);
+		}*/
 	}
 }
