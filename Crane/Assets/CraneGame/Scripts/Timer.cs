@@ -23,4 +23,8 @@ public class Timer : MonoBehaviour {
 			timerText.text = answer;
 		}
 	}
+
+	public float getTime(){
+		return second;
+	}
 }

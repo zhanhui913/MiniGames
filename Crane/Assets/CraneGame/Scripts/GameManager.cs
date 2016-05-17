@@ -24,6 +24,8 @@ public class GameManager : MonoBehaviour {
 	private const float FISH_SCALE_MIN = 0.125f;
 	private const float FISH_SCALE_MAX = 0.25f;
 
+	private const float MAX_ENERGY_BAR = 60.0f;
+
 	[HideInInspector]
 	public static bool startGame = false; //The game has not started yet
 	public static GameObject avatar = null;   //What avatar the user selected
@@ -296,9 +298,31 @@ public class GameManager : MonoBehaviour {
 
 		if (isSuccess) {
 			//gameOverText.text = "Successful";
+
+			float energy = EnergyBar.getFoodTime ();
+
+			float percent = ((1 - (energy / MAX_ENERGY_BAR)) * 100);
+
+			if(percent < 25){
+				//1 star
+			}else if(percent > 25 && percent < 70){
+				//2 stars
+			}else if(percent > 70){
+				//3 stars
+			}
+
+
+			float time = GameObject.FindGameObjectWithTag ("Timer").GetComponent<Timer> ().getTime();
+			Debug.LogWarning("-----> "+percent+" -> "+time);
+
 		} else {
+			Debug.LogWarning ("failed");
 			//gameOverText.text = "Failed";
 		}
+	}
+
+	private void setSuccessStatus(int health, int time){
+		Debug.LogWarning ("HEALTH : "+health+", TIME : "+time);
 	}
 
 	//Setter for chevronActive variable
