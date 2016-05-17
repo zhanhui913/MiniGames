@@ -69,7 +69,7 @@ public class GameManager : MonoBehaviour {
 	void Start () {
 		avatarPopup = GameObject.FindGameObjectWithTag ("AvatarSelectionPopup");
 		gameOverPopup = GameObject.FindGameObjectWithTag ("GameOverPopup");
-		gameOverText = gameOverPopup.transform.FindChild ("Info/Text").GetComponent<Text>();
+		gameOverText = gameOverPopup.transform.FindChild ("Frame_Interior/Text").GetComponent<Text>();
 
 		gameOverPopup.SetActive (false);//Must set it active when launching, otherwise we cannot get instance to it.
 
@@ -161,7 +161,7 @@ public class GameManager : MonoBehaviour {
 
 		//Spawn Algaes
 		for(int a = 0; a < numberOfRandomAlgaes ;a++){
-			int index = UnityEngine.Random.Range (0,2); //Because UnityEngine.Random.Range is used with integers, it returns a number from min to max-1.
+			int index = UnityEngine.Random.Range (0,AlgaesPrefabList.Length); //Because UnityEngine.Random.Range is used with integers, it returns a number from min to max-1.
 			spawnAlgae(index, xMin, xMax, AlgaesYMinPos, AlgaesYMaxPos);
 		}
 
@@ -177,7 +177,7 @@ public class GameManager : MonoBehaviour {
 	}
 		
 	/**
-	 * Spawns 1 of 2 different algaes depending on index at random x and y position (within the constraints provided in parameter)
+	 * Spawns 1 of 3 different algaes depending on index at random x and y position (within the constraints provided in parameter)
 	 */ 
 	public void spawnAlgae(int index, float xMin, float xMax, float yMin, float yMax){
 		float x = UnityEngine.Random.Range (xMin,xMax);
