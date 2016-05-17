@@ -76,6 +76,8 @@ public class Movement : MonoBehaviour, IPointerDownHandler, IPointerUpHandler {
 		//Used to ensure only 1 chevron can be clicked at a time 
 		if( GameManager.getChevronActive() == "false"){  
 
+			GameManager.isAvatarMoving = true;
+
 			GameManager.setChevronActive(aDirection.ToString()); //Set which direction the chevron is being used.
 
 			//Set animator parameter for avatar "Move" to true
@@ -93,6 +95,8 @@ public class Movement : MonoBehaviour, IPointerDownHandler, IPointerUpHandler {
 	private void StopWalk(){
 		//Used to ensure only 1 chevron can be clicked at a time 
 		if( GameManager.getChevronActive() == aDirection.ToString()){ 
+			GameManager.isAvatarMoving = false;
+
 			//Set animator parameter for avatar "Move" to false
 			Animator.SetBool (MOVE,false);
 			direction = 0;

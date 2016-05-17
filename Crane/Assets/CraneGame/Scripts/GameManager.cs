@@ -48,12 +48,14 @@ public class GameManager : MonoBehaviour {
 
 	private static GameObject avatarPopup;  //Avatar selection popup.
 	private static GameObject gameOverPopup; //Game over popup.
-	private static Text gameOverText;
+	//private static Text gameOverText;
 
 	private static string chevronActive = "false"; //Will be used to ensure that left/right chevron cannot be clicked simultaneously (left = left chevron is being used, right = right chevron is being used, false = unused)
 
 	private static bool once = false; //Only used to check once
 	public GameObject fedoraPrefab;
+
+	public static bool isAvatarMoving = false;
 
 	public Text foodCountText;
 	public const int NUM_FISH = 10;//The number of food required to win the game
@@ -72,7 +74,7 @@ public class GameManager : MonoBehaviour {
 	void Start () {
 		avatarPopup = GameObject.FindGameObjectWithTag ("AvatarSelectionPopup");
 		gameOverPopup = GameObject.FindGameObjectWithTag ("GameOverPopup");
-		gameOverText = gameOverPopup.transform.FindChild ("Frame_Interior/Text").GetComponent<Text>();
+		//gameOverText = gameOverPopup.transform.FindChild ("Frame_Interior/Text").GetComponent<Text>();
 
 		gameOverPopup.SetActive (false);//Must set it active when launching, otherwise we cannot get instance to it.
 
@@ -293,9 +295,9 @@ public class GameManager : MonoBehaviour {
 		gameOverPopup.SetActive (show);
 
 		if (isSuccess) {
-			gameOverText.text = "Successful";
+			//gameOverText.text = "Successful";
 		} else {
-			gameOverText.text = "Failed";
+			//gameOverText.text = "Failed";
 		}
 	}
 
