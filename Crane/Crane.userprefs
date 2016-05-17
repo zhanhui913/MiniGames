@@ -1,9 +1,10 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Base/Script/AvatarSelection.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/CraneGame/Scripts/GameManager.cs">
     <Files>
-      <File FileName="Assets/CraneGame/Scripts/AvatarMenu.cs" Line="12" Column="17" />
-      <File FileName="Assets/Base/Script/AvatarSelection.cs" Line="114" Column="3" />
+      <File FileName="Assets/Base/Script/AvatarSelection.cs" Line="129" Column="3" />
+      <File FileName="Assets/Base/Script/HorizontalListCreator.cs" Line="127" Column="22" />
+      <File FileName="Assets/CraneGame/Scripts/GameManager.cs" Line="178" Column="3" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

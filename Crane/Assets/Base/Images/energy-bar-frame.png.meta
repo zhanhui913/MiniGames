@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 044a2a98ef25c405ca5a87b962215bdc
+guid: e139ee51c0d8e4b8780b7baed0e66980
 timeCreated: 1463506589
 licenseType: Pro
 TextureImporter:
@@ -27,7 +27,7 @@ TextureImporter:
   cubemapConvolutionExponent: 1.5
   seamlessCubemap: 0
   textureFormat: -1
-  maxTextureSize: 1024
+  maxTextureSize: 512
   textureSettings:
     filterMode: -1
     aniso: 16

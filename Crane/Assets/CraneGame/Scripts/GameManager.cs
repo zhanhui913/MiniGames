@@ -304,7 +304,7 @@ public class GameManager : MonoBehaviour {
 	}
 
 	public void updateFoodCount(int foodNumber){
-		foodCountText.text = "Food Eaten : " + foodNumber;
+		foodCountText.text = "" + foodNumber;
 
 		if (foodNumber >= NUM_FISH) {
 			GameManager.setStartGame(false);
