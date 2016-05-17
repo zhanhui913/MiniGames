@@ -21,6 +21,9 @@ public class FishDetail{
 
 public class GameManager : MonoBehaviour {
 
+	private const float FISH_SCALE_MIN = 0.125f;
+	private const float FISH_SCALE_MAX = 0.25f;
+
 	[HideInInspector]
 	public static bool startGame = false; //The game has not started yet
 	public static GameObject avatar = null;   //What avatar the user selected
@@ -144,10 +147,13 @@ public class GameManager : MonoBehaviour {
 		GameObject f = (GameObject)Instantiate (fish.fishPrefabList[fishIndex]);
 		f.transform.parent = spawnObject.transform;
 		f.transform.localPosition = new Vector3 (x,y,0f);
+
+		float ranScale = UnityEngine.Random.Range (FISH_SCALE_MIN, FISH_SCALE_MAX);
+
 		if (direction == 0) {
-			f.transform.localScale = new Vector3 (f.transform.localScale.x, f.transform.localScale.y,f.transform.localScale.z); //Facing the right
+			f.transform.localScale = new Vector3 (ranScale, ranScale,f.transform.localScale.z); //Facing the right
 		} else {
-			f.transform.localScale = new Vector3 (-f.transform.localScale.x, f.transform.localScale.y, f.transform.localScale.z);//Facing the left
+			f.transform.localScale = new Vector3 (-ranScale, ranScale, f.transform.localScale.z);//Facing the left
 		}
 	}
 
