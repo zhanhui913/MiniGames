@@ -330,12 +330,8 @@ public class GameManager : MonoBehaviour {
 			gameOverScript.setSuccessStatus (healthStar,timeStar);
 		} else {
 			Debug.LogWarning ("failed");
-			//gameOverText.text = "Failed";
+			gameOverScript.setGameOverText("Oh no! You ran out of health.\nWould you like to try again?");
 		}
-	}
-
-	private void setSuccessStatus(int health, int time){
-		Debug.LogWarning ("HEALTH : "+health+", TIME : "+time);
 	}
 
 	//Setter for chevronActive variable

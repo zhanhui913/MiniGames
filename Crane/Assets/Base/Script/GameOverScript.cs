@@ -13,6 +13,8 @@ public class GameOverScript : MonoBehaviour {
 	public starSection mainStar, healthStar, timeStar;
 	public Image successPanel, failPanel;
 
+	public Text gameOverText;
+
 	public void setGameStatus(bool isSuccess){
 		successPanel.gameObject.SetActive (isSuccess);
 		failPanel.gameObject.SetActive (!isSuccess);
@@ -96,5 +98,9 @@ public class GameOverScript : MonoBehaviour {
 		} else {
 			throw new Exception ("There can only have 3 stars");
 		}
+	}
+
+	public void setGameOverText(string text){
+		gameOverText.text = text;
 	}
 }
