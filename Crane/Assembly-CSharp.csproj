@@ -48,6 +48,7 @@
      <Compile Include="Assets\Base\Script\AvatarSelection.cs" />
      <Compile Include="Assets\Base\Script\Container.cs" />
      <Compile Include="Assets\Base\Script\FPS.cs" />
+     <Compile Include="Assets\Base\Script\GameOverScript.cs" />
      <Compile Include="Assets\Base\Script\HorizontalListCreator.cs" />
      <Compile Include="Assets\Base\Script\Tiling.cs" />
      <Compile Include="Assets\CraneGame\Scripts\Avatar.cs" />

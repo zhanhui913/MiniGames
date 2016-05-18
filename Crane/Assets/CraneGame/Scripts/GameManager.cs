@@ -83,7 +83,6 @@ public class GameManager : MonoBehaviour {
 		//Pause time
 		Time.timeScale = 0;
 
-
 		//create a number spawn points specified by the user in the list fish.numSpawn
 		createFishSpawnPoints (fish.numSpawn);
 
@@ -296,25 +295,39 @@ public class GameManager : MonoBehaviour {
 	public static void GameOver(bool show, bool isSuccess){
 		gameOverPopup.SetActive (show);
 
+		GameOverScript gameOverScript = GameObject.FindGameObjectWithTag ("GameOverPopup").GetComponent<GameOverScript>();
+		gameOverScript.setGameStatus (isSuccess);
+
 		if (isSuccess) {
-			//gameOverText.text = "Successful";
-
+			int healthStar= 0, timeStar = 0;
+			
+			//Calculate the energy bar in terms of percentage
 			float energy = EnergyBar.getFoodTime ();
-
 			float percent = ((1 - (energy / MAX_ENERGY_BAR)) * 100);
-
 			if(percent < 25){
 				//1 star
+				healthStar = 1;
 			}else if(percent > 25 && percent < 70){
 				//2 stars
+				healthStar = 2;
 			}else if(percent > 70){
 				//3 stars
+				healthStar = 3;
 			}
 
+			float time = GameObject.FindGameObjectWithTag ("Timer").GetComponent<Timer> ().getTime ();
+			if(time < 15.0f){
+				//1 star
+				timeStar = 1;
+			}else if(time >= 15.0f && time < 30.0f){
+				//2 stars
+				timeStar = 2;
+			}else if(time >= 30.0f){
+				//3 stars
+				timeStar = 3;
+			}
 
-			float time = GameObject.FindGameObjectWithTag ("Timer").GetComponent<Timer> ().getTime();
-			Debug.LogWarning("-----> "+percent+" -> "+time);
-
+			gameOverScript.setSuccessStatus (healthStar,timeStar);
 		} else {
 			Debug.LogWarning ("failed");
 			//gameOverText.text = "Failed";
