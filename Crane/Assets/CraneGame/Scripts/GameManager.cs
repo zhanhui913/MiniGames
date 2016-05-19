@@ -36,9 +36,11 @@ public class GameManager : MonoBehaviour {
 	private const float FISH_SCALE_MAX = 0.25f;
 
 	public GameObject SnailPrefab;
+	public GameObject wormPrefab;
 	private const float SNAIL_MIN_Y_POS = -1.3f;
 	private const float SNAIL_MAX_Y_POS = -0.5f;
 	private const float NUM_SNAIL = 10;
+	private const float NUM_WORMS = 10;
 
 	public GameObject FrogPrefab;
 	private float FROG_Y_POS = -0.75f;
@@ -171,6 +173,11 @@ public class GameManager : MonoBehaviour {
 		for(int s = 0; s < NUM_SNAIL ;s++){
 			spawnSnail(xMin, xMax, SNAIL_MIN_Y_POS, SNAIL_MAX_Y_POS);
 		}
+
+		//Spawn worms
+		for(int s = 0; s < NUM_WORMS ;s++){
+			spawnWorm(xMin, xMax, SNAIL_MIN_Y_POS, SNAIL_MAX_Y_POS);
+		}
 	}
 		
 	/**
@@ -219,6 +226,24 @@ public class GameManager : MonoBehaviour {
 		float direction = UnityEngine.Random.Range (0,2);
 		
 		GameObject s = (GameObject)Instantiate (SnailPrefab);
+		s.transform.parent = fish.waterContainer.transform;
+		s.transform.localPosition = new Vector2 (x,y);
+		if(direction == 0){ //Have it face left
+			s.transform.localScale = new Vector2(s.transform.localScale.x,s.transform.localScale.y);
+		}else if(direction == 1){ //Have it face right
+			s.transform.localScale = new Vector2(-s.transform.localScale.x,s.transform.localScale.y);
+		}
+	}
+
+	/**
+	 * Spawn worms at random x and y position (within the constraints provided in parameter)
+	 */ 
+	public void spawnWorm(float xMin, float xMax, float yMin, float yMax){
+		float x = UnityEngine.Random.Range (xMin, xMax);
+		float y = UnityEngine.Random.Range (yMin,yMax);
+		float direction = UnityEngine.Random.Range (0,2);
+
+		GameObject s = (GameObject)Instantiate (wormPrefab);
 		s.transform.parent = fish.waterContainer.transform;
 		s.transform.localPosition = new Vector2 (x,y);
 		if(direction == 0){ //Have it face left
