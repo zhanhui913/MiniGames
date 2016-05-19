@@ -24,9 +24,9 @@ public class CameraControl : MonoBehaviour {
 		rightPanel = GameObject.Find ("RightPanel");
 		leftPanel = GameObject.Find ("LeftPanel");
 	}
-	
-	// Update is called once per frame
-	void Update () {
+
+	//Used instead of Update so that moving to the left will not have the jagged cloud movement
+	void LateUpdate(){
 		//If the game has started
 		if (GameManager.startGame) {
 			if(GameManager.avatar != null){
