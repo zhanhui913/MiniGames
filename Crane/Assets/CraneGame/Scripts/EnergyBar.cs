@@ -39,9 +39,11 @@ public class EnergyBar : MonoBehaviour {
 		//Once the game has started
 		if(GameManager.startGame){
 			if (foodTime <= (energy + 0.5)) { //Added 0.5 seconds so the energyBar is not visible at all when the energy depletes.
-				//if(GameManager.isAvatarMoving){
-					foodTime += (Time.deltaTime * 3);	
-				//}
+				if (GameManager.isAvatarMoving) {
+					foodTime += (Time.deltaTime * 2);	
+				} else {
+					foodTime += (Time.deltaTime);
+				}
 				newXPos = new Vector2(origXPos.x - (foodTime * offsetWidth) , transform.position.y);	
 
 				//Decrease energy bar position based on seconds left
