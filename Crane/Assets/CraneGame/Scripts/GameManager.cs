@@ -8,12 +8,12 @@ using UnityEngine.SceneManagement;
 [Serializable]
 public class FishDetail{
 	public GameObject[] fishPrefabList; //The list of fishes
-	public GameObject waterContainer;//The parent container where the fish objects should be spawn under
-	public GameObject spawnPrefab;//The fishSpawnPoint prefab
-	public int numSpawn; //Number of spawns
-	public int numFishInSpawn;//Number of fishes around each spawn point.
-	public int fishSpawnRadius;//The radius to which the fishes will spawn within.
-	public float offsetSpawnFromSide;//The offset from the left & right x coordinate for the fish spawn points
+	public GameObject waterContainer;   //The parent container where the fish objects should be spawn under
+	public GameObject spawnPrefab;      //The fishSpawnPoint prefab
+	public int numSpawn;                //Number of spawns
+	public int numFishInSpawn;          //Number of fishes around each spawn point.
+	public int fishSpawnRadius;         //The radius to which the fishes will spawn within.
+	public float offsetSpawnFromSide;   //The offset from the left & right x coordinate for the fish spawn points
 
 	[HideInInspector]
 	public List<GameObject> fishSpawnList = new List<GameObject> ();//The lists of spawn points prefabs of the fishes.
@@ -21,52 +21,42 @@ public class FishDetail{
 
 public class GameManager : MonoBehaviour {
 
-	private const float FISH_SCALE_MIN = 0.125f;
-	private const float FISH_SCALE_MAX = 0.25f;
+	public static GameManager self;
 
 	private const float MAX_ENERGY_BAR = 60.0f;
 
 	[HideInInspector]
 	public static bool startGame = false; //The game has not started yet
 	public static GameObject avatar = null;   //What avatar the user selected
-	
-	public static GameManager self;
+	public static bool isAvatarMoving = false;
 
 	public FishDetail fish;
+	private const int NUM_FISH_NEEDED_TO_WIN = 10;//The number of food required to win the game
+	private const float FISH_SCALE_MIN = 0.125f;
+	private const float FISH_SCALE_MAX = 0.25f;
 
 	public GameObject SnailPrefab;
-	private float SnailYMinPos = -1.3f;
-	private float SnailYMaxPos = -0.5f;
-	private float numberOfRandomSnails = 10;
+	private const float SNAIL_MIN_Y_POS = -1.3f;
+	private const float SNAIL_MAX_Y_POS = -0.5f;
+	private const float NUM_SNAIL = 10;
 
 	public GameObject FrogPrefab;
-	private float FrogYPos = -0.75f;
-	private float numberOfRandomFrogs = 10;
+	private float FROG_Y_POS = -0.75f;
+	private float NUM_FROG = 10;
 
 	public GameObject[] AlgaesPrefabList;
-	private float AlgaesYMinPos = -0.04f;
-	private float AlgaesYMaxPos = 1.1f;
-	private float numberOfRandomAlgaes = 10;
+	private float ALGAE_MIN_Y_POS = -0.04f;
+	private float ALGAE_MAX_Y_POS = 1.1f;
+	private float NUM_ALGAE = 10;
 
 	private static GameObject avatarPopup;  //Avatar selection popup.
 	private static GameObject gameOverPopup; //Game over popup.
-	//private static Text gameOverText;
 
 	private static string chevronActive = "false"; //Will be used to ensure that left/right chevron cannot be clicked simultaneously (left = left chevron is being used, right = right chevron is being used, false = unused)
 
-	private static bool once = false; //Only used to check once
+	//Used to make sure fedora is only created once per game
+	private static bool fedoraOnce = false;
 	public GameObject fedoraPrefab;
-
-	public static bool isAvatarMoving = false;
-
-	public Text foodCountText;
-	public const int NUM_FISH = 10;//The number of food required to win the game
-
-	public static Avatar avatarScript{
-		get{ 
-			return avatar.GetComponent<Avatar> ();
-		}	
-	}
 
 	void Awake(){
 		self = this;
@@ -76,7 +66,6 @@ public class GameManager : MonoBehaviour {
 	void Start () {
 		avatarPopup = GameObject.FindGameObjectWithTag ("AvatarSelectionPopup");
 		gameOverPopup = GameObject.FindGameObjectWithTag ("GameOverPopup");
-		//gameOverText = gameOverPopup.transform.FindChild ("Frame_Interior/Text").GetComponent<Text>();
 
 		gameOverPopup.SetActive (false);//Must set it active when launching, otherwise we cannot get instance to it.
 
@@ -88,17 +77,16 @@ public class GameManager : MonoBehaviour {
 
 		spawnOthers ();
 
-		updateFoodCount (0);
+		updateFoodCount(0);
 	}
 
-	// Update is called once per frame
 	void Update () {
 		//After 2 seconds
-		if(startGame && !once && (Time.deltaTime* 1000 > 2)){ 
+		if(startGame && !fedoraOnce && (Time.deltaTime* 1000 > 2)){ 
 			GameObject fedora = (GameObject)Instantiate(fedoraPrefab);
 			fedora.transform.parent = fish.waterContainer.transform;
 			fedora.transform.localPosition = new Vector2(0,10);
-			once = true;
+			fedoraOnce = true;
 		}
 	}
 		
@@ -169,19 +157,19 @@ public class GameManager : MonoBehaviour {
 		float xMax = width / 2;
 
 		//Spawn Algaes
-		for(int a = 0; a < numberOfRandomAlgaes ;a++){
+		for(int a = 0; a < NUM_ALGAE ;a++){
 			int index = UnityEngine.Random.Range (0,AlgaesPrefabList.Length); //Because UnityEngine.Random.Range is used with integers, it returns a number from min to max-1.
-			spawnAlgae(index, xMin, xMax, AlgaesYMinPos, AlgaesYMaxPos);
+			spawnAlgae(index, xMin, xMax, ALGAE_MIN_Y_POS, ALGAE_MAX_Y_POS);
 		}
 
 		//Spawn Frogs
-		for(int f = 0; f < numberOfRandomFrogs ;f++){
-			spawnFrog(xMin, xMax, FrogYPos);
+		for(int f = 0; f < NUM_FROG ;f++){
+			spawnFrog(xMin, xMax, FROG_Y_POS);
 		}
 
 		//Spawn Snails
-		for(int s = 0; s < numberOfRandomSnails ;s++){
-			spawnSnail(xMin, xMax, SnailYMinPos, SnailYMaxPos);
+		for(int s = 0; s < NUM_SNAIL ;s++){
+			spawnSnail(xMin, xMax, SNAIL_MIN_Y_POS, SNAIL_MAX_Y_POS);
 		}
 	}
 		
@@ -265,8 +253,16 @@ public class GameManager : MonoBehaviour {
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
-	//These functions below are static functions (to be accessible from other scripts)
+	//
+	// These functions below are static functions (to be accessible from other scripts)
+	//
 	////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	public static Avatar avatarScript{
+		get{ 
+			return avatar.GetComponent<Avatar> ();
+		}	
+	}
 
 	//Set the avatar so that other scripts can access what avatar the user selected
 	public static void setAvatar(GameObject avatarObject){
@@ -316,13 +312,13 @@ public class GameManager : MonoBehaviour {
 			}
 
 			float time = GameObject.FindGameObjectWithTag ("Timer").GetComponent<Timer> ().getTime ();
-			if(time < 15.0f){
+			if(time >= 30.0f){
 				//1 star
 				timeStar = 1;
 			}else if(time >= 15.0f && time < 30.0f){
 				//2 stars
 				timeStar = 2;
-			}else if(time >= 30.0f){
+			}else if(time < 15.0f){
 				//3 stars
 				timeStar = 3;
 			}
@@ -344,17 +340,18 @@ public class GameManager : MonoBehaviour {
 		return chevronActive;
 	}
 
-	public void updateFoodCount(int foodNumber){
+	public static void updateFoodCount(int foodNumber){
+		Text foodCountText = GameObject.FindGameObjectWithTag ("FoodCount").GetComponent<Text>();
 		foodCountText.text = "" + foodNumber;
 
-		if (foodNumber >= NUM_FISH) {
+		if (foodNumber >= NUM_FISH_NEEDED_TO_WIN) {
 			GameManager.setStartGame(false);
 			GameManager.GameOver(true, true);
 		}
 	}
 
 	public void restartLevel(){
-		once = false;
+		fedoraOnce = false;
 		SceneManager.LoadScene (0);
 	}
 }

@@ -25,6 +25,6 @@ public class Beak : MonoBehaviour {
 			transform.FindChild ("Fedora").gameObject.SetActive (true);
 		}
 			
-		GameManager.self.updateFoodCount (foodCount);
+		GameManager.updateFoodCount(foodCount);
 	}
 }
